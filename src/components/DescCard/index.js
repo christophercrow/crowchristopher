@@ -34,7 +34,7 @@ export default function DescCard({ project, cardRef }) {
                 <h1>{title}</h1>
                 <IndDate>
                   <h6>{project.industry}</h6>
-                  <h6>{project.year}</h6>
+                  <h6>&nbsp;{project.year}</h6>
                 </IndDate>
               </div>
               <div>
