@@ -13,7 +13,7 @@
     {
         "id": "securenet",
         "title": "SecureNet",
-        "description": "Malicious Mobile Application Detection.",
+        "description": "Analysis and identification of malicious mobile applications.",
         "image": "https://raw.githubusercontent.com/AmreshSinha/SecureNet_Backend/main/Securenet.png",
         "link": "https://github.com/AmreshSinha/SecureNet_Backend",
         "category": "Development",
