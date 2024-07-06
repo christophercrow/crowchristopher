@@ -11,6 +11,17 @@
         "tools": ["JavaScript", "Nodejs", "React", "Express", "MongoDB", "Socket.io", "Docker"]
     },
     {
+        "id": "securenet",
+        "title": "SecureNet",
+        "description": "Malicious Mobile Application Detection.",
+        "image": "https://raw.githubusercontent.com/AmreshSinha/SecureNet_Backend/main/Securenet.png",
+        "link": "https://github.com/AmreshSinha/SecureNet_Backend",
+        "category": "Development",
+        "year": 2023,
+        "industry": "Smart India Hackathon (SIH) 2023",
+        "tools": ["Python", "FastAPI", "Redis", "MobSF", "3rd Party APIs", "REST", "Docker", "LLM"]
+    },
+    {
         "id": "shopai",
         "title": "ShopAI",
         "description": "Implementation of the solution of the problem statement of the hackathon 'Flipkart Grid 5.0', ShopAI is a fashion shopping AI Assistant which converses and gives outfit recommendations",
