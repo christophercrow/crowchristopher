@@ -160,31 +160,23 @@ export default function Works() {
             <link rel="manifest" href={siteManifest} />
             
             {/* Meta Info */}
-            <meta name="title" content="Works | Amresh Sinha" />
-            <meta name="description" content="Amresh Sinha's personal website" />
-            <meta name="keywords" content="Amresh Sinha, Personal Website, Developer, Open Sourcer, Devops Engineer, Student" />
-            <meta name="author" content="Amresh Sinha" />
+            <meta name="title" content="Works | Christopher Crow" />
+            <meta name="description" content="Christopher Crow's personal website" />
+            <meta name="keywords" content="Christopher Crow, Personal Website, Developer, Open Sourcer, Devops Engineer, Student" />
+            <meta name="author" content="Christopher Crow" />
 
             {/* Open Graph */}
-            <meta property="og:title" content="Amresh Sinha" />
-            <meta property="og:description" content="Amresh Sinha's personal website" />
+            <meta property="og:title" content="Christopher Crow" />
+            <meta property="og:description" content="Christopher Crow's personal website" />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="/" />
             <meta property="og:image" content="images/bgDesktop2.jpg" />
             <meta property="og:image:width" content="1920" />
             <meta property="og:image:height" content="1080" />
-            <meta property="og:image:alt" content="Amresh Sinha's personal website" />
-            <meta property="og:site_name" content="Amresh Sinha" />
+            <meta property="og:image:alt" content="Christopher Crow's personal website" />
+            <meta property="og:site_name" content="Christopher Crow" />
             <meta property="og:locale" content="en_US" />
 
-            {/* twitter meta */}
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="Amresh Sinha" />
-            <meta name="twitter:description" content="Amresh Sinha's personal website" />
-            <meta name="twitter:image" content="images/bgDesktop2.jpg" />
-            <meta name="twitter:image:alt" content="Amresh Sinha's personal website" />
-            <meta name="twitter:site" content="@aps_codes" />
-            <meta name="twitter:creator" content="@aps_codes" />
         </Helmet>
         <GlobalStyle />
         <WorksWrapper>

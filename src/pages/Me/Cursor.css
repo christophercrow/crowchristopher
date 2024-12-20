@@ -1,0 +1,10 @@
+/* Cursor.css */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Ensures it doesn't interfere with clicks */
+    z-index: 9999;        /* On top of everything */
+    transition: transform 0.1s ease-out;
+  }
+  

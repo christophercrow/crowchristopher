@@ -1,662 +1,451 @@
-import { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
+import { ScrollContainer, ScrollPage, Animator, batch, Sticky, Fade, MoveIn, ZoomIn } from 'react-scroll-motion';
 import { Link } from 'react-router-dom';
-import { Animator, ScrollContainer, ScrollPage, Sticky, batch, Fade, MoveOut, StickyIn, FadeIn, ZoomIn, Move, MoveIn, ZoomOut } from 'react-scroll-motion';
-import { useInView } from 'react-intersection-observer';
-import { osName } from 'react-device-detect';
-import Cursor from "../../components/Cursor";
-import favicon from '../../images/favicon.ico'
-import appleIcon from '../../images/apple-touch-icon.png'
-import favicon32 from '../../images/favicon-32x32.png'
-import favicon16 from '../../images/favicon-16x16.png'
-import siteManifest from '../../images/site.webmanifest'
-import SocialIcons from '../../components/SocialIcons';
-import meBg1 from '../../images/meBg1.jpg';
-import CloudsBG from '../../images/clouds-png-13378.png';
-import DockerBG from '../../images/ian-taylor-jOqJbvo1P9g-unsplash.jpg';
-// import RickRoll from '../../images/Rick-Roll.mp4';
-import RickRoll from '../../components/RickRoll';
-import ErrorWindows from '../../components/ErrorWindows';
+import Cursor from "../../components/Cursor"; // Reintroduce your custom cursor component
 
-function getWindowSize() {
-    const {innerWidth, innerHeight} = window;
-    return {innerWidth, innerHeight};
-}
 
-export default function Me() {
-    const [windowSize, setWindowSize] = useState(getWindowSize())
-    const [mobile, setMobile] = useState(false)
-    const [tablet, setTablet] = useState(false)
-    useEffect(() => {
-        function handleWindowResize() {
-            setWindowSize(getWindowSize());
-        }
-        window.addEventListener('resize', handleWindowResize);
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        };
-    }, [])
 
-    useEffect(() => {
-        if(windowSize.innerWidth < 768) {
-            setMobile(true)
-        } else {
-            setMobile(false)
-        }
-        if(windowSize.innerWidth < 1024) {
-            setTablet(true)
-        } else {
-            setTablet(false)
-        }
-    }, [windowSize])
 
-    // const [offsetY, setOffsetY] = useState(0);
-    // const handleScroll = () => setOffsetY(window.pageYOffset);
-    // console.log((offsetY/(500*windowSize.innerHeight) * 100))
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
+export default function MyJourney() {
+  // Animation presets
+  const FadeInUp = batch(Sticky(), Fade(), MoveIn(0, 100));
+  const FadeInFromLeft = batch(Sticky(), Fade(), MoveIn(-100, 0));
+  const FadeInFromRight = batch(Sticky(), Fade(), MoveIn(100, 0));
+  const ZoomFadeIn = batch(Sticky(), Fade(), ZoomIn());
+
+  // Interactive state for the welcome message
+  const [showMore, setShowMore] = useState(false);
+
+  // State to determine if tablet or not (optional)
+  const [tablet, setTablet] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setTablet(window.innerWidth < 1024);
+    }
+    handleResize(); // initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <JourneyWrapper>
+      <HomeLink to="/">← Home</HomeLink>
+      <ScrollContainer>
+
+        {/* Interactive Welcome */}
+        <ScrollPage>
+          <Animator animation={ZoomFadeIn}>
+            <WelcomeWrapper>
+              <WelcomeTitle>
+                Hey there, <NameHighlight>I'm Chris</NameHighlight>.
+              </WelcomeTitle>
+              <WelcomeText>
+                Welcome to my digital scrapbook. Think of this as a guided tour through my evolution from a curious fifth-grader tinkering with hardware to a future-minded cybersecurity enthusiast.
+              </WelcomeText>
+              {!showMore && (
+                <ShowMoreButton onClick={() => setShowMore(true)}>
+                  Want to learn more about me before we begin? Click here!
+                </ShowMoreButton>
+              )}
+              {showMore && (
+                <MoreInfo>
+                  <p>Fun Fact: My first "OMG computers are awesome" moment came when I saw the inside of a PC tower and realized it was like a puzzle waiting to be solved.</p>
+                  <p>Keep scrolling, and I'll show you how that spark turned into a journey across astrophysics, programming, and cybersecurity.</p>
+                </MoreInfo>
+              )}
+              <InstructionText>Just scroll down to start the story ↓</InstructionText>
+            </WelcomeWrapper>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Introduction */}
+        <ScrollPage>
+          <Animator animation={ZoomFadeIn}>
+            <SectionText>
+              <Highlight>In the fifth grade, my world changed forever</Highlight> when I helped my father build his very own computer, bridging circuits and silicon into something magical.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              As each <GradHighlight>cable clicked into place</GradHighlight>, I saw more than parts; I saw an intricate tapestry of logic and possibility.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              Soon, I became inseparable from our family computer, <GradHighlight>navigating the internet</GradHighlight> like a curious traveler, hungry for knowledge and inspired by the ways technology empowers us.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Early Security Realization */}
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              In those early days, I stumbled upon Wireshark, using it playfully in old Call of Duty lobbies. But beneath the thrill, I discovered something profound: our digital footprints are surprisingly visible.  
+              That revelation sparked a growing awareness of <GradHighlight>internet security</GradHighlight> and privacy.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Middle School Tech Growth */}
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              By middle school, still without my own PC, I cherished my humble laptop. Determined to shield my online presence, I explored network protocols, set up an OpenVPN instance, and learned how data slides through hidden passages of the web.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              Experimenting with a <GradHighlight>dual-boot of Linux and Windows</GradHighlight>, I embraced the beauty of system diversity and the freedom it granted me as a budding technologist.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* High School Decision */}
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              Approaching high school felt like standing at a crossroads: Should I pursue college, devote myself to sports, or just follow the tides of normality?
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
         
-    //     return () => window.addEventListener('scroll', handleScroll);
-    // }, [])
-
-    // Rick Roll shh
-    const { ref, inView, entry } = useInView({
-        /* Optional options */
-        threshold: 0,
-    });
-    
-    return (
-        <>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>About Amresh</title>
-                <link rel="canonical" href={window.location.href} />
-                <link rel="icon" href={favicon} />
-                <link rel="apple-touch-icon" sizes="180x180" href={appleIcon} />
-                <link rel="icon" type="image/png" sizes="32x32" href={favicon32} />
-                <link rel="icon" type="image/png" sizes="16x16" href={favicon16} />
-                <link rel="manifest" href={siteManifest} />
-
-                {/* Meta Info */}
-                <meta name="title" content="About Amresh" />
-                <meta name="description" content="Amresh Sinha's personal website" />
-                <meta name="keywords" content="Amresh Sinha, Personal Website, Developer, Open Sourcer, Devops Engineer, Student" />
-                <meta name="author" content="Amresh Sinha" />
-
-                {/* Open Graph */}
-                <meta property="og:title" content="About Amresh" />
-                <meta property="og:description" content="Amresh Sinha's personal website" />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="/" />
-                <meta property="og:image" content="images/bgDesktop2.jpg" />
-                <meta property="og:image:width" content="1920" />
-                <meta property="og:image:height" content="1080" />
-                <meta property="og:image:alt" content="Amresh Sinha's personal website" />
-                <meta property="og:site_name" content="Amresh Sinha" />
-                <meta property="og:locale" content="en_US" />
-
-                {/* twitter meta */}
-                <meta name="twitter:card" content="summary" />
-                <meta name="twitter:title" content="About Amresh" />
-                <meta name="twitter:description" content="Amresh Sinha's personal website" />
-                <meta name="twitter:image" content="images/bgDesktop2.jpg" />
-                <meta name="twitter:image:alt" content="Amresh Sinha's personal website" />
-                <meta name="twitter:site" content="@aps_codes" />
-                <meta name="twitter:creator" content="@aps_codes" />
-            </Helmet>
-            <Wrapper>
-            <ScrollContainer>
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), Fade(), MoveOut(0, -2000))}>
-                        <Text2>Hi.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(StickyIn(), FadeIn(), ZoomIn())}>
-                        <Text2>I am Amresh.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(0,0), Fade())}>
-                        <div style={{position: 'absolute', zIndex: -1, background: '#748DA6', height: '100vh', width: '100vw'}}></div>
-                    </Animator>
-                    <Animator animation={batch(StickyIn(), Fade(), MoveIn())}>
-                        <Text2 style={{color: '#F2D7D9'}}>I am a Web Developer,</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(0,0), Fade())}>
-                        <div style={{position: 'absolute', zIndex: -1, background: '#635666', height: '100vh', width: '100vw'}}></div>
-                    </Animator>
-                    <Animator animation={batch(StickyIn(), Fade())}>
-                        <Text2 style={{color: '#D3EBCD'}}>DevOps Engineer,</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(0,0), Fade())}>
-                        <div style={{position: 'absolute', zIndex: -1, background: '#576F72', height: '100vh', width: '100vw'}}></div>
-                    </Animator>
-                    <Animator animation={batch(StickyIn(), Fade())}>
-                        <Text2 style={{color: '#F0EBE3'}}>Open Source Enthusiast,</Text2>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(0,0), Fade())}>
-                        <div style={{position: 'absolute', zIndex: -1, background: '#E7AB79', height: '100vh', width: '100vw'}}></div>
-                    </Animator>
-                    <Animator animation={batch(Sticky(), Fade(), MoveIn())}>
-                        <Text2 style={{color: '#4C3A51'}}>and a Student.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(0,0), Fade())}>
-                        <div style={{position: 'absolute', zIndex: -1, background: `url(${meBg1}) no-repeat 10% 20%`, filter: 'brightness(75%)', height: '100vh', width: '100vw'}}></div>
-                    </Animator>
-                    <Animator animation={batch(Sticky(), Fade(), MoveIn())}>
-                        <Text2 style={{fontSize: '5rem', color: '#F2D7D9', mixBlendMode: 'difference'}}>I love <span style={{textDecoration: 'none', background: 'linear-gradient(to right, #748DA6, #F2D7D9)', backgroundRepeat: 'repeat-x', backgroundSize: '100% 5px', backgroundPosition: '0 95%'}}>Trekking</span>, <span style={{textDecoration: 'none', background: 'linear-gradient(to right, #F37878, #D9F8C4)', backgroundRepeat: 'repeat-x', backgroundSize: '100% 5px', backgroundPosition: '0 95%'}}>Cycling</span> and <span style={{textDecoration: 'none', background: 'linear-gradient(to right, #DFF6FF, #1363DF)', backgroundRepeat: 'repeat-x', backgroundSize: '100% 5px', backgroundPosition: '0 95%'}}>Swimming</span>.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '3rem'}}>Grab something to eat as this is going to be long.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '3rem'}}>Keep scrollin'!</Text2>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '3rem'}}>Here's my journey.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), Fade(), MoveIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>I got my first computer 🖥️ in 2011.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), Fade())}>
-                        <Text2 style={{fontSize: '2rem'}}>I was in 4th standard at that time.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>I started out with BASIC, QBASIC and Turtle.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(StickyIn(), FadeIn(), ZoomIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>🐢 was awesome!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '2rem'}}>In 5th standard my dad bought me a dongle.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>I never knew how the Internet would look like.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>Till that time I just read about Internet in the books 📚 only.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>I plugged it. Opened IE and 💥!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(StickyIn(), FadeIn(), ZoomIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>The Internet was so awesome! I can literally go anywhere,</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(StickyIn(), Fade(), MoveIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>search about any info, chat with friends, and play games.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>Transitioning to 6th standard.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>I got introduced to HTML <img alt='' style={{width: '32px'}} src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />, CSS <img alt='' style={{ width: '32px' }} src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" /> and JavaScript <img alt='' style={{width: '32px'}} src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>                    
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), StickyIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>It was cool!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), StickyIn())}>
-                        <Text2 style={{fontSize: '1.5rem'}}>I thought I am one step closer to making my own billion $ site like</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), StickyIn(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}><span style={{color: '#4285F4'}}>G</span><span style={{color: '#DB4437'}}>o</span><span style={{color: '#F4B400'}}>o</span><span style={{color: '#4285F4'}}>g</span><span style={{color: '#0F9D58'}}>l</span><span style={{color: '#DB4437'}}>e</span> xD</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), StickyIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>In 7th or 8th (can't recall that correctly) I learned more about Python.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), StickyIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>Later in 9th standard I was introduced to C++.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '2rem'}}>Sadly after 10th, I was not in touch with programming for 2 years, all thnx to</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), ZoomOut())}>
-                        <Text2 style={{fontSize: '2rem'}}>JEE <img alt='' style={{ width: '32px' }} src="https://cdn3.emoji.gg/emojis/2982-pepecry.png"/></Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '2rem'}}>I got into IIT Guwahati.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>When I was preparing for JEE I had the plans to fully devote my time to coding after I enter college.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveIn())}>
-                        <Text2 style={{fontSize: '2rem'}}>So yeah, in 1st yr I learned OpenCV, NodeJS, React, Express and MongoDB.</Text2>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '2rem'}}>Made some good friends :)</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '2rem'}}>Transitioning to 2nd yr.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveIn(-200, 0), MoveOut(200, 0))}>
-                        <Text2 style={{fontSize: '2rem'}}>Got into our college's Coding Club.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '2rem'}}>Learned more about Web Frameworks like NextJS.</Text2>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), ZoomIn(10))}>
-                        <Text2 style={{fontSize: '4rem'}}>BTW I forgot to told u.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <div style={{width: '100vw', height: '100vh', background: `url(${CloudsBG}) no-repeat center center`}}></div>
-                    </Animator>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '4rem'}}>I used to love Cloud stuff from way back in 8th stnd.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '4rem'}}>Playing with Virtual Machines, Linux VMs, Deploying and experimenting with new new stuff.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>In the starting of 2nd year I started out with DevOps.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <div style={{width: '100vw', height: '100vh', background: `url(${DockerBG}) no-repeat center center`, backgroundSize: 'cover', filter: 'brightness(50%)'}}></div>
-                    </Animator>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>Though I had some knowledge about Docker I brushed <img alt='' style={{width: '2.5rem'}} src="https://images.emojiterra.com/google/noto-emoji/v2.034/128px/1faa5.png" /> it up again.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>Learned more about Linux.<br />(I use Arch BTW! <img alt='' style={{width: '3rem'}} src="https://cdn3.emoji.gg/emojis/5498_catJAM.gif" />)</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>In 4th Semester I took part in Inter IIT in a Team.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>We placed 3rd position <img alt='' style={{ width: '3.1rem' }} src="https://cdn3.emoji.gg/emojis/5163-95-crythumbsup.png" />.</Text2>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), Fade())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>...</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>Recently I restarted my blog <a style={{ color: '#F9F9F9' }} href="https://fossian.com" target="_blank" without rel="noreferrer">Fossian</a>.</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), MoveOut())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>and started out using Traefik (RiP Nginx).</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Fade(), Sticky(), Move())}>
-                        <Text2 style={{fontSize: '3.25rem'}}>And this brings us to the present</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), FadeIn())}>
-                        <div style={{ display: "flex", flexDirection: 'column', justifyContent: "center", alignItems: "center", height: "100%" }} >
-                            <Text2 style={{fontSize: '3.25rem'}}>Me.</Text2>
-                            <span style={{marginTop: '1rem'}}><SocialIcons color="#999" email="amresh@duck.com" /></span>
-                        </div>
-                    </Animator>
-                </ScrollPage>
-                
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <div style={{ display: "flex", flexDirection: 'column', justifyContent: "center", alignItems: "center", height: "100%" }} >
-                            <Text2 style={{fontSize: '3.25rem'}}>Me.</Text2>
-                            <span style={{marginTop: '1rem'}}><SocialIcons color="#999" email="amresh@duck.com" /></span>
-                        </div>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <div style={{ display: "flex", flexDirection: 'column', justifyContent: "center", alignItems: "center", height: "100%" }} >
-                            <Text2 style={{fontSize: '3.25rem'}}>Me.</Text2>
-                            <span style={{marginTop: '1rem'}}><SocialIcons color="#999" email="amresh@duck.com" /></span>
-                        </div>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <ErrorWindows />
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage></ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <Text2 style={{fontSize: '4rem', fontWeight: '900'}}>That's probably enough for today!<br />Stop scrolling!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <Text2 style={{fontSize: '4rem', fontWeight: '900'}}>That's probably enough for today!<br />Stop scrolling!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <Text2 style={{fontSize: '4rem', fontWeight: '900'}}>That's probably enough for today!<br />Stop scrolling!</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={Sticky()}>
-                        <Text2 style={{fontSize: '4rem', fontWeight: '900'}}>Still scrollin'?</Text2>
-                    </Animator>
-                </ScrollPage>
-
-                <ScrollPage>
-                </ScrollPage>
-
-                <ScrollPage>
-                    <Animator animation={batch(Sticky(), Fade())}>
-                        <div ref={ref} style={{width: '100vw', height: '100vh', background: '#000'}}>
-                            {inView ? 
-                            <RickRoll os={osName} /> : null }
-                        </div>
-                    </Animator>
-                </ScrollPage>
-                
-                
-            </ScrollContainer>
-            <GoBack to="/" id="home">← Home</GoBack>
-            <ScrollDown>Scroll ↓</ScrollDown>
-            {!tablet ? <Cursor /> : null}
-            </Wrapper>
-        </>
-    )
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              Then I discovered the <GradHighlight>North Carolina School of Science and Mathematics (NCSSM)</GradHighlight>. Its reputation as the nation's top public high school felt distant and unattainable, yet I dared to dream.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+        
+        <ScrollPage>
+          <Animator animation={ZoomFadeIn}>
+            <SectionText>
+              To my astonishment, I was accepted—proof that even a rural student, with a calculus class of barely five peers, could find a place in a realm of intellectual brilliance.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* NCSSM & Astrophysics */}
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              At NCSSM, I encountered the elegance of physics. An initial placement in Pre-Calculus stung my pride, but I transformed that setback into motivation, self-studying calculus, and blazing through AP exams with relentless determination.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              Soon, I navigated higher-level math and <GradHighlight>fell headfirst into astrophysics</GradHighlight>. Each formula and concept revealed layers of the universe, leaving me mesmerized and eager to explore cosmic mysteries.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Programming Introduction */}
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              My advanced physics courses nudged me into programming—C++, R, and especially Python—tools that let me model phenomena, manipulate data, and give life to abstract equations.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={ZoomFadeIn}>
+            <SectionText>
+              With Python's gentle syntax and vast libraries, I learned to <GradHighlight>bridge knowledge and computation</GradHighlight>, turning scattered numbers into vivid insights.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* College at UNC */}
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              At the University of North Carolina at Chapel Hill, I encountered a structured academic environment that felt stifling—much of the curriculum overlapped with what I'd already mastered.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              This struggle led to a revelation: I had ADHD. Understanding this allowed me to seek proper strategies and accommodations, unlocking a new era of confidence and focus.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Research with Dr. Rodriguez */}
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              Armed with newfound clarity, I approached professors about research and connected with <GradHighlight>Dr. Carl Rodriguez</GradHighlight>, whose astrophysics research enthralled me.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              After proving my coding abilities, I joined his lab as a sophomore. Unlike typical undergraduate roles, I was entrusted with an independent project investigating the mass gap between neutron stars and black holes.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              In this realm of data analysis, GitHub repositories, and HPC clusters, I refined my Bash scripting, learned to build robust pipelines, and contributed to COSMIC, a powerful Python package simulating large binary star populations.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Return to Cybersecurity */}
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SectionText>
+              Meanwhile, my original fascination with computing quietly re-emerged. Between astrophysical simulations and research deadlines, I found myself curious about the <GradHighlight>secure foundations of our digital world</GradHighlight>.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={ZoomFadeIn}>
+            <SectionText>
+              Revisiting Nmap, Wireshark, and Burp Suite felt like reuniting with old friends. I set up a home server, experimented with cyber labs, and learned both red and blue team strategies to understand vulnerabilities from every angle.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Future in Cybersecurity */}
+        <ScrollPage>
+          <Animator animation={FadeInFromLeft}>
+            <SectionText>
+              Now, as I near the completion of my astrophysics degree, I turn my gaze from the stars to the servers, from cosmic evolution to network security.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        <ScrollPage>
+          <Animator animation={FadeInFromRight}>
+            <SectionText>
+              I will blend the analytical precision I honed modeling binary star systems with the tactical ingenuity demanded by modern cybersecurity, eager to protect the digital infrastructure we rely on.
+            </SectionText>
+          </Animator>
+        </ScrollPage>
+
+        <ScrollPage />
+
+        {/* Socials Page */}
+        <ScrollPage>
+          <Animator animation={FadeInUp}>
+            <SocialsWrapper>
+              <SectionText style={{marginBottom: '2rem'}}>
+                <GradHighlight>Connect with Me</GradHighlight>
+              </SectionText>
+              <SocialLink href="https://www.linkedin.com/in/christopher-crow-915288240/" target="_blank">LinkedIn</SocialLink>
+              <SocialLink href="mailto:cecrow@unc.edu">Email</SocialLink>
+            </SocialsWrapper>
+          </Animator>
+        </ScrollPage>
+
+      </ScrollContainer>
+      {!tablet && <Cursor />} {/* Show custom cursor if not tablet */}
+    </JourneyWrapper>
+  );
 }
 
-const Wrapper = styled.div`
-    * {
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-    }
-    background: #111;
-`
+const JourneyWrapper = styled.div`
+  background: #111;
+  color: #f0f0f0;
+  font-family: 'Space Grotesk', sans-serif;
+  position: relative;
+`;
 
-const GoBack = styled(Link)`
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    color: #999;
-    text-decoration: none;
-`
+const HomeLink = styled(Link)`
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  color: #f0f0f0;
+  text-decoration: none;
+  z-index: 999;
+  font-size: 1.2rem;
 
-const ScrollDown = styled.div`
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    color: #999;
-`
+  &:hover {
+    color: #FF9A8B;
+  }
+`;
 
-// const HeroBackground = styled.div`
-//     position: absolute;
-//     height: 100%;
-//     width: 100%;
-//     background: url(${HeroImage}) no-repeat center center;
-//     top: 0;
-//     background-size: cover;
-//     z-index: -1;
-// `
+/* Welcome Section */
+const WelcomeWrapper = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+`;
 
-// const Text = styled.div`
-//     font-family: 'Space Grotesk', sans-serif;
-//     font-size: 8rem;
-//     color: #999;
-//     mix-blend-mode: difference;
-//     font-weight: 600;
-//     position: fixed;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-// `
+const WelcomeTitle = styled.h1`
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
 
-const Text2 = styled.h2`
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 8rem;
-    color: #F6FBF4;
-    mix-blend-mode: difference;
-    font-weight: 600;
-    @media screen and (max-width: 768px) {
-        font-size: 3rem !important;
-    }
-    @media screen and (max-width: 480px) {
-        font-size: 2rem !important;
-    }
-`
+const WelcomeText = styled.p`
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-bottom: 2rem;
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
+const NameHighlight = styled.span`
+  background: linear-gradient(45deg, #F78CA0, #F9748F, #FD868C, #FE9A8B);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+`;
+
+const ShowMoreButton = styled.button`
+  background: #222;
+  color: #f0f0f0;
+  border: 2px solid #f0f0f0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+
+  &:hover {
+    background: #444;
+  }
+`;
+
+const MoreInfo = styled.div`
+  font-size: 1.2rem;
+  line-height: 1.75rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
+const InstructionText = styled.p`
+  font-size: 1rem;
+  color: #888;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+`;
+
+const SectionText = styled.p`
+  font-size: 1.4rem;
+  margin: 0 auto;
+  width: 70%;
+  text-align: center;
+  line-height: 2.1rem;
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    width: 85%;
+  }
+`;
+
+const Highlight = styled.span`
+  background: linear-gradient(45deg, #F78CA0, #F9748F, #FD868C, #FE9A8B);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+`;
+
+const GradHighlight = styled.span`
+  background: linear-gradient(45deg, #84fab0, #8fd3f4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+`;
+
+const SocialsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
+
+const SocialLink = styled.a`
+  color: #f0f0f0;
+  text-decoration: none;
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+
+  &:hover {
+    color: #8fd3f4;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+`;

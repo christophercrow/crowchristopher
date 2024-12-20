@@ -1,78 +1,13 @@
 [
     {
-        "id": "paasify",
-        "title": "Paasify (WIP)",
-        "description": "A platform for developers to deploy their apps on the cloud with a single click.",
-        "image": "https://raw.githubusercontent.com/Paasify/Paasify/main/arch.png",
-        "link": "https://github.com/Paasify",
-        "category": "Development (WIP)",
-        "year": 2023,
-        "industry": "Personal Project (WIP)",
-        "tools": ["JavaScript", "Nodejs", "React", "Express", "MongoDB", "Socket.io", "Docker"]
-    },
-    {
-        "id": "securenet",
-        "title": "SecureNet",
-        "description": "Analysis and identification of malicious mobile applications.",
-        "image": "https://raw.githubusercontent.com/AmreshSinha/SecureNet_Backend/main/Securenet.png",
-        "link": "https://github.com/AmreshSinha/SecureNet_Backend",
-        "category": "Development",
-        "year": 2023,
-        "industry": "Smart India Hackathon (SIH)",
-        "tools": ["Python", "FastAPI", "Redis", "MobSF", "3rd Party APIs", "REST", "Docker", "LLM"]
-    },
-    {
-        "id": "shopai",
-        "title": "ShopAI",
-        "description": "Implementation of the solution of the problem statement of the hackathon 'Flipkart Grid 5.0', ShopAI is a fashion shopping AI Assistant which converses and gives outfit recommendations",
-        "image": "https://raw.githubusercontent.com/AmreshSinha/ShopAI/main/SearchPreview.png",
-        "link": "https://github.com/AmreshSinha/ShopAI",
-        "category": "Development",
-        "year": 2023,
-        "industry": "Flipkart Grid 5.0",
-        "tools": ["Typescript", "Nodejs", "React", "FastAPI", "Selenium", "Google Cloud Platform", "GPT-4"]
-    },
-    {
-        "id": "alphaq",
-        "title": "alphaQ",
-        "description": "A Web3 decentralized Ad Platform made as a solution for Consensys' Metamask problem statement in Inter IIT Tech Meet 11.0 (2023)",
-        "image": "https://i.imgur.com/8KZz38J.jpeg",
-        "link": "https://github.com/AmreshSinha/alphaQ",
-        "category": "Development",
-        "year": 2023,
-        "industry": "Inter IIT Tech Meet 11.0",
-        "tools": ["Typescript", "Nextjs", "React", "Metamask Snap", "MongoDB"]
-    },
-    {
-        "id": "solar-flare-detector",
-        "title": "Solar Flare Detector",
-        "description": "ISRO's Web Based Solar Bursts in X-Ray Light Curves Detector project done as a solution for ISRO's (Indian Space Research Organization) problem statement in Inter IIT Tech Meet 10.0 (2022)",
-        "image": "https://i.imgur.com/3Br7FJU.png",
-        "link": "https://github.com/search?q=inter-iit-isro+user%3AAmreshSinha&type=Repositories&ref=advsearch&l=&l=",
-        "category": "Development",
-        "year": 2022,
-        "industry": "Inter IIT Tech Meet 10.0",
-        "tools": ["JavaScript", "Python", "React", "Flask", "Recharts.js"]
-    },{
-        "id": "sshot",
-        "title": "SShot",
-        "description": "An API for capturing web screenshots, supporting multiple parameters for changing the settings of the capture.",
-        "image": "https://raw.githubusercontent.com/AmreshSinha/sshot/main/public/images/sshot.png",
-        "link": "https://sshot.fossian.com",
-        "category": "Development",
-        "year": 2022,
-        "industry": "Personal Project",
-        "tools": ["JavaScript", "Nodejs", "Express", "Puppeteer", "Redis", "Docker"]
-    },
-    {
-        "id": "spotify-promoCards-api",
-        "title": "Spotify PromoCards API",
-        "description": "An unofficial Spotify PromoCards generator API inspired by the original Spotify's shareable song cards.",
-        "image": "https://i.imgur.com/0bzeEcN.png",
-        "link": "https://spotify-cards.fossian.com",
-        "category": "Development",
-        "year": 2021,
-        "industry": "Personal Project",
-        "tools": ["JavaScript", "Nodejs", "Express", "Spotify Web API", "node-canvas", "Docker"]
+        "id": "SESAPS Conference",
+        "title": "Astrophysics Research Presentation",
+        "description": "A spotlight on my recent astrophysics research findings presented at the Southeastern Section of the American Physical Society (SESAPS) 2024 meeting. The talk covered modeling binary star populations and investigating the mass gap between neutron stars and black holes.",
+        "image": "https://raw.githubusercontent.com/christophercrow/wink/refs/heads/dev-react/src/images/CrowChristopher_SESAPS.jpg",
+        "link": "https://meetings.aps.org/Meeting/SES24/Session/D01.56",
+        "category": "Academic Conference",
+        "year": 2024,
+        "industry": "Astrophysics Research",
+        "tools": ["Python", "C++", "Modern Fortran", "COSMIC-popsynth", "HPC Clusters", "GitHub", "LaTeX"]
     }
 ]

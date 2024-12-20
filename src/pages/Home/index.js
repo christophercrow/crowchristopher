@@ -4,9 +4,9 @@ import styled from "styled-components"
 import Typed from 'typed.js';
 import DesktopNav from "../../components/DesktopNav"
 import ShowMoreButton from "../../components/ShowMoreButton"
-import bgDesktop from "../../images/bgDesktop_Optimized.webp"
+import bgDesktop from "../../images/bg.jpg"
 import SocialIcons from "../../components/SocialIcons";
-import Cursor from "../../components/Cursor";
+import Cursor from "../../components/Cursor"; // Ensuring you use the modified Cursor
 import {Helmet} from "react-helmet";
 import favicon from '../../images/favicon.ico'
 import appleIcon from '../../images/apple-touch-icon.png'
@@ -21,11 +21,11 @@ function getWindowSize() {
 }
 
 export default function Home() {
-    // Moving Background WIP
     const movingBackground = useRef()
     const [windowSize, setWindowSize] = useState(getWindowSize())
     const [mobile, setMobile] = useState(false)
     const [tablet, setTablet] = useState(false)
+    
     useEffect(() => {
         function handleWindowResize() {
             setWindowSize(getWindowSize());
@@ -49,26 +49,14 @@ export default function Home() {
         }
     }, [windowSize])
 
-    // useEffect(() => {
-    //   const handleWindowMouseMove = event => {
-    //     console.log(event.screenX, event.screenY);
-    //     movingBackground.current.style.backgroundPosition = `top ${event.screenY} left ${event.screenX}`
-    //   };
-    //   window.addEventListener('mousemove', handleWindowMouseMove);
-
-    //   return () => {
-    //     window.removeEventListener('mousemove', handleWindowMouseMove);
-    //   };
-    // }, []);
-
     const el = useRef(null)
     const elParent = useRef(null)
 
     useEffect(() => {
-        var temp = 0;
+        let temp = 0;
         const stringColors = ['#47FFE9', '#00FFAB', '#F7EC09', '#F9D371']
         const typed = new Typed(el.current, {
-            strings: ['developer', 'open sourcer', 'fullstack eng.', 'student'],
+            strings: ['Astrophysicist', 'Cybersecurity Enthusiast', 'Data Explorer', 'Problem Solver'],
             shuffle: false,
             startDelay: 500,
             typeSpeed: 60,
@@ -82,7 +70,6 @@ export default function Home() {
             onLastStringBackspaced: function(self) { temp = 0 },
         });
       
-        // Destroying
         return () => {
             typed.destroy();
         };      
@@ -93,30 +80,27 @@ export default function Home() {
             lFollowY = 0,
             x = 0,
             y = 0,
-            friction = 1 / 50; // friction = 1 / 30;
+            friction = 1 / 50; 
         
         function moveBackground() {
             x += (lFollowX - x) * friction;
             y += (lFollowY - y) * friction;
-            
             var translate = 'translate(' + x + 'px, ' + y + 'px) scale(1.1)';
-          
             movingBackground.current.style.transform = translate;
-          
             window.requestAnimationFrame(moveBackground);
         }
           
         window.addEventListener('mousemove', function(e) {
-          
             var lMouseX = Math.max(-100, Math.min(100, windowSize.innerWidth / 2 - e.clientX));
             var lMouseY = Math.max(-100, Math.min(100, windowSize.innerHeight / 2 - e.clientY));
-            lFollowX = (20 * lMouseX) / 100; // 100 : 12 = lMouxeX : lFollow
+            lFollowX = (20 * lMouseX) / 100; 
             lFollowY = (10 * lMouseY) / 100;
         });
           
         moveBackground();
     }, [windowSize.innerHeight, windowSize.innerWidth])
 
+    // Animations
     const backgroundRef = useSpringRef();
     const backgroundAnim = useSpring({
         ref: backgroundRef,
@@ -124,6 +108,7 @@ export default function Home() {
         from: { opacity: 0 },
         to: { opacity: 1 },
     })
+
     const navRef = useSpringRef();
     const navReveal = useSpring({
         ref: navRef,
@@ -131,6 +116,7 @@ export default function Home() {
         from: { opacity: 0, x: -20, y: -200},
         to: { opacity: 1, x: 0, y: 0},
     })
+
     const wtRef = useSpringRef();
     const wtReveal = useSpring({
         ref: wtRef,
@@ -138,6 +124,7 @@ export default function Home() {
         from: { opacity: 0, x: 20},
         to: { opacity: 1, x: 0},
     })
+
     const worksTitleRef = useSpringRef();
     const worksTitleReveal = useTrail(5, {
         ref: worksTitleRef,
@@ -146,6 +133,7 @@ export default function Home() {
         to: { opacity: 1, x: 0, height: 110 },
     })
     const worksTitleList = "Works".split("")
+
     const descLine1Ref = useSpringRef();    
     const descLine2Ref = useSpringRef();    
     const descLine3Ref = useSpringRef();    
@@ -163,7 +151,7 @@ export default function Home() {
         from: { opacity: 0, x: 20, height: 0 },
         to: { opacity: 1, x: 0, height: 110 },
     })
-    const descLine2List = "Amresh Sinha,".split(" ")
+    const descLine2List = "Christopher Crow,".split(" ")
     const descLine3Anim = useSpring({
         ref: descLine3Ref,
         config: { mass: 5, tension: 2000, friction: 200 },
@@ -176,6 +164,7 @@ export default function Home() {
         from: { opacity: 0, x: -20 },
         to: { opacity: 1, x: 0 },
     })
+
     const workButtonRef = useSpringRef();
     const workButtonAnim = useSpring({
         ref: workButtonRef,
@@ -183,6 +172,7 @@ export default function Home() {
         from: { opacity: 0, x: -20 },
         to: { opacity: 1, x: 0 },
     })
+
     const socialIconsRef = useSpringRef();
     const socialIconsAnim = useSpring({
         ref: socialIconsRef,
@@ -190,13 +180,15 @@ export default function Home() {
         from: { opacity: 0, x: -20 },
         to: { opacity: 1, x: 0 }
     })
+
     useChain([navRef, wtRef, worksTitleRef, backgroundRef, descLine1Ref, descLine2Ref, descLine3Ref, descLine4Ref, workButtonRef, socialIconsRef], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 200)
 
     return (
         <>
         <Helmet>
+            {/* Helmet Meta Info */}
             <meta charSet="utf-8" />
-            <title>Amresh Sinha</title>
+            <title>Christopher Crow</title>
             <link rel="canonical" href={window.location.href} />
             <link rel="icon" href={favicon} />
             <link rel="apple-touch-icon" sizes="180x180" href={appleIcon} />
@@ -204,30 +196,29 @@ export default function Home() {
             <link rel="icon" type="image/png" sizes="16x16" href={favicon16} />
             <link rel="manifest" href={siteManifest} />
 
-            {/* Meta Info */}
-            <meta name="title" content="Amresh Sinha" />
-            <meta name="description" content="Amresh Sinha's personal website" />
-            <meta name="keywords" content="Amresh Sinha, Personal Website, Developer, Open Sourcer, Devops Engineer, Student" />
-            <meta name="author" content="Amresh Sinha" />
+            <meta name="title" content="Christopher Crow" />
+            <meta name="description" content="Christopher Crow's personal website" />
+            <meta name="keywords" content="Christopher Crow, Personal Website, Developer, Open Sourcer, Devops Engineer, Student" />
+            <meta name="author" content="Christopher Crow" />
 
             {/* Open Graph */}
-            <meta property="og:title" content="Amresh Sinha" />
-            <meta property="og:description" content="Amresh Sinha's personal website" />
+            <meta property="og:title" content="Christopher Crow" />
+            <meta property="og:description" content="Christopher Crow's personal website" />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="/" />
             <meta property="og:image" content="images/bgDesktop2.jpg" />
             <meta property="og:image:width" content="1920" />
             <meta property="og:image:height" content="1080" />
-            <meta property="og:image:alt" content="Amresh Sinha's personal website" />
-            <meta property="og:site_name" content="Amresh Sinha" />
+            <meta property="og:image:alt" content="Christopher Crow's personal website" />
+            <meta property="og:site_name" content="Christopher Crow" />
             <meta property="og:locale" content="en_US" />
 
             {/* twitter meta */}
             <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="Amresh Sinha" />
-            <meta name="twitter:description" content="Amresh Sinha's personal website" />
+            <meta name="twitter:title" content="Christopher Crow" />
+            <meta name="twitter:description" content="Christopher Crow's personal website" />
             <meta name="twitter:image" content="images/bgDesktop2.jpg" />
-            <meta name="twitter:image:alt" content="Amresh Sinha's personal website" />
+            <meta name="twitter:image:alt" content="Christopher Crow's personal website" />
             <meta name="twitter:site" content="@aps_codes" />
             <meta name="twitter:creator" content="@aps_codes" />
         </Helmet>
@@ -236,20 +227,42 @@ export default function Home() {
             <DesktopNav style={navReveal} />
             <MainAreaWrapper>
                 <IntroWrapper>
-                    <h1>{descLine1Anim.map(({...style}, index) => (<a.span style={style} key={index}>{descLine1List[index]} </a.span>))}<br />{descLine2Anim.map(({...style}, index) => (<a.span style={style} key={index}>{descLine2List[index]} </a.span>))}<br /><a.span style={descLine3Anim}>a <div style={{display: "inline"}} ref={elParent}><span ref={el} id="cursorHover">developer</span></div></a.span></h1>
-                    {!mobile ? <a.h2 style={descLine4Anim}>I make immersive software that moves<br />people.</a.h2> : <a.h2 style={descLine4Anim}>I make immersive software<br />that moves people.</a.h2>}
+                    <h1>
+                        {descLine1Anim.map(({...style}, index) => (
+                            <a.span style={style} key={index}>{descLine1List[index]} </a.span>
+                        ))}<br />
+                        {descLine2Anim.map(({...style}, index) => (
+                            <a.span style={style} key={index}>{descLine2List[index]} </a.span>
+                        ))}<br />
+                        <a.span style={descLine3Anim}>
+                            a <div style={{display: "inline"}} ref={elParent}>
+                                <span ref={el} id="cursorHover">Astrophysicist</span>
+                            </div>
+                        </a.span>
+                    </h1>
+                    {!mobile ? (
+                        <a.h2 style={descLine4Anim}>
+                            Blending cosmic insights, data analysis, and secure code <br />
+                            to shape a safer digital universe.
+                        </a.h2>
+                    ) : (
+                        <a.h2 style={descLine4Anim}>
+                            Blending cosmic insights, data analysis, <br />
+                            and secure code to shape a safer digital universe.
+                        </a.h2>
+                    )}
                     <ShowMoreButton style={workButtonAnim} />
                 </IntroWrapper>
+
                 <WorkAndEmailWrapper style={wtReveal}>
                     <WorkLink to="/works">
                         {worksTitleReveal.map(({...style}, index) => (<a.span style={style} key={index}>{worksTitleList[index]}</a.span>))}
                     </WorkLink>
-                    <TriangleDiv><a href="mailto:amresh@duck.com">amresh@duck.com</a></TriangleDiv>
+                    <TriangleDiv><a href="mailto:cecrow@unc.edu">cecrow@unc.edu</a></TriangleDiv>
                 </WorkAndEmailWrapper>
             </MainAreaWrapper>
             <FooterWrapper>
-                {!mobile ? <SocialIcons style={socialIconsAnim} /> : <SocialIcons style={socialIconsAnim} email="amresh@duck.com" />}
-                {/* email={'amresh@duck.com'} */}
+                {!mobile ? <SocialIcons style={socialIconsAnim} /> : <SocialIcons style={socialIconsAnim} email="cecrow@unc.edu" />}
                 <Year style={socialIconsAnim}>20<br/>24</Year>
             </FooterWrapper>
             {!tablet ? <Cursor /> : null}
@@ -265,18 +278,6 @@ const HeroWrapper = styled.div`
     position: relative;
     background-color: #000;
     z-index: 0;
-    /* background-image: url(${bgDesktop});
-    background-position: top -10vh left;
-    @media screen and (max-width: 1200px) {
-        background-position: top left;
-    }
-    background-repeat: no-repeat;
-    background-size: cover;
-    filter: brightness(95%); */
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 `
 
 const BGdiv = styled(a.div)`
@@ -364,15 +365,14 @@ const WorkLink = styled(Link)`
         background: linear-gradient(to right, #8a2387, #e94057, #f27121);
         transform-origin: bottom right;
         transition: transform 0.25s ease-out;
-        }
-        :hover::after {
+    }
+    :hover::after {
         transform: scaleX(1);
         transform-origin: bottom left;
-        }
+    }
 `
 
 const TriangleDiv = styled.div`
-    /* position: absolute; */
     height: 40vh;
     width: 40vh;
     background: linear-gradient(110deg, rgb(254, 198, 141) 0%, rgb(255, 63, 80) 50%, rgba(255, 52, 155, 0.976) 100%);
@@ -389,25 +389,24 @@ const TriangleDiv = styled.div`
         font-size: 24px;
         font-weight: 600;
         :after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        transform: scaleX(0);
-        height: 3px;
-        bottom: 0;
-        left: 0;
-        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-        transform-origin: bottom right;
-        transition: transform 0.25s ease-out;
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
         }
         :hover::after {
-        transform: scaleX(1);
-        transform-origin: bottom left;
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
     }
     a {
         transition: all 0.2s ease-in-out;
-            
         :hover {
             color: #fff;
             transform: rotate(45deg) translateY(40px) scale(1.1);
