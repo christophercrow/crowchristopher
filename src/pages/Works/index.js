@@ -151,7 +151,7 @@ export default function Works() {
         <>
         <Helmet>
             <meta charSet="utf-8" />
-            <title>Works | AmreshSinha</title>
+            <title>Works | ChristopherCrow</title>
             <link rel="canonical" href={window.location.href} />
             <link rel="icon" href={favicon} />
             <link rel="apple-touch-icon" sizes="180x180" href={appleIcon} />
@@ -177,6 +177,14 @@ export default function Works() {
             <meta property="og:site_name" content="Christopher Crow" />
             <meta property="og:locale" content="en_US" />
 
+            {/* twitter meta */}
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:title" content="Christopher Crow" />
+            <meta name="twitter:description" content="Christopher Crow's personal website" />
+            <meta name="twitter:image" content="images/bgDesktop2.jpg" />
+            <meta name="twitter:image:alt" content="Christopher Crow's personal website" />
+            <meta name="twitter:site" content="@aps_codes" />
+            <meta name="twitter:creator" content="@aps_codes" />
         </Helmet>
         <GlobalStyle />
         <WorksWrapper>
@@ -586,3 +594,4 @@ const Year = styled(a.span)`
         display: none;
     }
 `
+
