@@ -212,15 +212,6 @@ export default function Home() {
             <meta property="og:image:alt" content="Christopher Crow's personal website" />
             <meta property="og:site_name" content="Christopher Crow" />
             <meta property="og:locale" content="en_US" />
-
-            {/* twitter meta */}
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="Christopher Crow" />
-            <meta name="twitter:description" content="Christopher Crow's personal website" />
-            <meta name="twitter:image" content="images/bgDesktop2.jpg" />
-            <meta name="twitter:image:alt" content="Christopher Crow's personal website" />
-            <meta name="twitter:site" content="@aps_codes" />
-            <meta name="twitter:creator" content="@aps_codes" />
         </Helmet>
         <HeroWrapper>
             <BGdiv ref={movingBackground} style={backgroundAnim} />

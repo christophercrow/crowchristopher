@@ -1,0 +1,22 @@
+[
+    {
+      "id": 1,
+      "title": "Scaling Monte Carlo Simulations in Computational Astrophysics",
+      "summary": "Optimizing Monte Carlo simulations for astrophysical models.",
+      "content": "Full detailed content about memory optimization, parallelization, and resource balancing.",
+      "date": "Jan 05, 2025",
+      "link": "https://www.tutoringcrow.net",
+      "category": "Computational Astrophysics",
+      "tools": ["Python", "Fortran", "HPC Clusters", "NumPy", "Git"]
+    },
+    {
+      "id": 2,
+      "title": "Building a Homelab for Enterprise-Grade Data Processing",
+      "summary": "Mimicking HPC workflows at home for rapid experimentation.",
+      "content": "Full detailed content about virtualization, container orchestration, and system optimization.",
+      "date": "Feb 20, 2025",
+      "category": "Infrastructure & HPC",
+      "tools": ["Docker", "Kubernetes", "Linux", "GitHub Actions"]
+    }
+  ]
+  
