@@ -7,22 +7,28 @@ import axios from "axios";
 export default function BlogCard({ item, style, setProject, setShowCard }) {
   const [previewImage, setPreviewImage] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!item.link) return;
 
     const fetchLinkPreview = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/link-preview`, {
+        const response = await axios.get('/api/link-preview', {
           params: { url: item.link },
         });
         const data = response.data;
         if (data.images && data.images.length > 0) {
           setPreviewImage(data.images[0]);
+        } else {
+          // Optionally set a fallback image if no OG image is found
+          setPreviewImage('/fallback-image.jpg'); // Ensure this image exists in your public folder
         }
       } catch (err) {
         console.error("Failed to fetch link preview:", err.message);
-        // Optionally set a fallback image here
+        setError("Unable to load preview image.");
+        // Optionally set a fallback image on error
+        setPreviewImage('/fallback-image.jpg');
       }
     };
 
@@ -57,6 +63,8 @@ export default function BlogCard({ item, style, setProject, setShowCard }) {
           )}
         </ImageWrapper>
         
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+
         <InfoRow>
           <h3>{item.category}</h3>
         </InfoRow>
