@@ -1,18 +1,27 @@
+// Refactored Blog Page Imports
+
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
-import DesktopNav from "../../components/DesktopNav";
-import favicon from '../../images/favicon.ico';
-import appleIcon from '../../images/apple-touch-icon.png';
-import favicon32 from '../../images/favicon-32x32.png';
-import favicon16 from '../../images/favicon-16x16.png';
-import siteManifest from '../../images/site.webmanifest';
-import Cursor from "../../components/Cursor";
-import SocialIcons from "../../components/SocialIcons";
+
+// Updated component imports
+import DesktopNav from "../../components/layout/DesktopNav";
+import Cursor from "../../components/ui/Cursor";
+import SocialIcons from "../../components/ui/SocialIcons";
+import Search from "../../components/features/Search";
+import BlogCard from "../../components/features/BlogCard";
+
+// Updated metadata and asset paths
+import favicon from '../../assets/images/favicon.ico';
+import appleIcon from '../../assets/images/apple-touch-icon.png';
+import favicon32 from '../../assets/images/favicon-32x32.png';
+import favicon16 from '../../assets/images/favicon-16x16.png';
+import siteManifest from '../../assets/images/site.webmanifest';
+
 import { useTrail, a, useChain, useSpring, useSpringRef, useTransition } from '@react-spring/web';
-import Search from "../../components/Search";
-import BlogCard from "../../components/BlogCard";
-import blogConfig from '../../data/blogConfig.json'; // Importing the blog config
+
+// Updated data config path
+import blogConfig from '../../data/blogConfig.json';
 
 function getWindowSize() {
     const {innerWidth, innerHeight} = window;
