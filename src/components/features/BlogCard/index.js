@@ -63,7 +63,6 @@ export default function BlogCard({ item, style, setProject, setShowCard }) {
           )}
         </ImageWrapper>
         
-        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <InfoRow>
           <h3>{item.category}</h3>

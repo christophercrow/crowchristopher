@@ -229,6 +229,7 @@ useEffect(() => {
             <meta property="og:locale" content="en_US" />
         </Helmet>
         <HeroWrapper>
+            <Cursor />
             <BGdiv ref={movingBackground} style={backgroundAnim} />
             <DesktopNav style={navReveal} />
             <MainAreaWrapper>
@@ -271,7 +272,7 @@ useEffect(() => {
                 {!mobile ? <SocialIcons style={socialIconsAnim} /> : <SocialIcons style={socialIconsAnim} email="cecrow@unc.edu" />}
                 <Year style={socialIconsAnim}>20<br/>24</Year>
             </FooterWrapper>
-            {!tablet ? <Cursor /> : null}
+
         </HeroWrapper>
         </>
     )
