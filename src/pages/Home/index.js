@@ -1,19 +1,24 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components"
+import styled from "styled-components";
 import Typed from 'typed.js';
-import DesktopNav from "../../components/DesktopNav"
-import ShowMoreButton from "../../components/ShowMoreButton"
-import bgDesktop from "../../images/bg.jpg"
-import SocialIcons from "../../components/SocialIcons";
-import Cursor from "../../components/Cursor"; // Ensuring you use the modified Cursor
-import {Helmet} from "react-helmet";
-import favicon from '../../images/favicon.ico'
-import appleIcon from '../../images/apple-touch-icon.png'
-import favicon32 from '../../images/favicon-32x32.png'
-import favicon16 from '../../images/favicon-16x16.png'
-import siteManifest from '../../images/site.webmanifest'
-import {a, useChain, useSpring, useTrail, useSpringRef } from "@react-spring/web";
+
+// Updated imports after refactor
+import DesktopNav from "../../components/layout/DesktopNav";
+import ShowMoreButton from "../../components/ui/ShowMoreButton";
+import SocialIcons from "../../components/ui/SocialIcons";
+import Cursor from "../../components/ui/Cursor";
+
+import bgDesktop from "../../assets/images/bg.jpg";
+
+import { Helmet } from "react-helmet";
+import favicon from '../../assets/images/favicon.ico';
+import appleIcon from '../../assets/images/apple-touch-icon.png';
+import favicon32 from '../../assets/images/favicon-32x32.png';
+import favicon16 from '../../assets/images/favicon-16x16.png';
+import siteManifest from '../../assets/images/site.webmanifest';
+
+import { a, useChain, useSpring, useTrail, useSpringRef } from "@react-spring/web";
 
 function getWindowSize() {
     const {innerWidth, innerHeight} = window;
