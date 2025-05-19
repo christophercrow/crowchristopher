@@ -9,16 +9,5 @@
         "year": 2024,
         "industry": "Astrophysics Research",
         "tools": ["Python", "C++", "Modern Fortran", "Binary Synthesis", "HPC Clusters", "GitHub", "LaTeX"]
-    },
-    {
-        "id": "SESAPS Conference",
-        "title": "Astrophysics Research Presentation",
-        "description": "A spotlight on my recent astrophysics research findings presented at the Southeastern Section of the American Physical Society (SESAPS) 2024 meeting. The talk covered modeling binary star populations and investigating the mass gap between neutron stars and black holes.",
-        "image": "https://raw.githubusercontent.com/christophercrow/wink/refs/heads/dev-react/src/images/CrowChristopher_SESAPS.jpg",
-        "link": "https://meetings.aps.org/Meeting/SES24/Session/D01.56",
-        "category": "Academic Conference",
-        "year": 2024,
-        "industry": "Astrophysics Research",
-        "tools": ["Python", "C++", "Modern Fortran", "COSMIC-popsynth", "HPC Clusters", "GitHub", "LaTeX"]
     }
 ]

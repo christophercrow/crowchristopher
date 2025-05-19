@@ -1,0 +1,46 @@
+[
+    {
+      "title": "Linux Server Hardening",
+      "description": "Configured and secured Ubuntu and CentOS servers using firewall rules, SSH lockdown, automatic updates, and auditing tools.",
+      "tools": [
+        "UFW",
+        "Fail2Ban",
+        "SSH",
+        "AIDE",
+        "Lynis"
+      ],
+      "year": 2024
+    },
+    {
+      "title": "Ansible Automation",
+      "description": "Automated provisioning and updates across multiple environments using Ansible playbooks and roles.",
+      "tools": [
+        "Ansible",
+        "YAML",
+        "SSH",
+        "Git"
+      ],
+      "year": 2024
+    },
+    {
+      "title": "Dockerized Infrastructure",
+      "description": "Containerized Nginx, PostgreSQL, and custom scripts to streamline deployment and scaling.",
+      "tools": [
+        "Docker",
+        "Docker Compose",
+        "Nginx",
+        "PostgreSQL"
+      ],
+      "year": 2023
+    },
+    {
+      "title": "System Monitoring Stack",
+      "description": "Deployed and configured Prometheus, Grafana, and node exporters for resource usage and uptime visibility.",
+      "tools": [
+        "Prometheus",
+        "Grafana",
+        "Node Exporter"
+      ],
+      "year": 2023
+    }
+  ]

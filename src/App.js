@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Home from './pages/Home';
-import Me from './pages/Me'
-import Works from './pages/Works'
+import Me from './pages/Me';
+import Works from './pages/Works';
 import BlogPage from "./pages/Blog";
 import BlogDetail from './components/features/BlogDetail';
+import SysAdmin from './pages/SysAdmin'; // ✅ New import
+
 function App() {
   return (
     <Routes>
@@ -14,13 +16,9 @@ function App() {
       <Route path="/categories/:category" element={<BlogPage />} />
       <Route path="/blog/:id" element={<BlogDetail />} />
       <Route path="/me" element={<Me />} />
+      <Route path="/sysadmin" element={<SysAdmin />} /> {/* ✅ New route */}
     </Routes>
   );
 }
-
-// function Blog() {
-//   window.location.href = 'https://fossian.com';
-//   return null;
-// }
 
 export default App;

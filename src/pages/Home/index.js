@@ -82,30 +82,38 @@ export default function Home() {
         };      
     }, [])
 
-    useEffect(() => {
-        var lFollowX = 0,
-            lFollowY = 0,
-            x = 0,
-            y = 0,
-            friction = 1 / 50; 
-        
-        function moveBackground() {
-            x += (lFollowX - x) * friction;
-            y += (lFollowY - y) * friction;
-            var translate = 'translate(' + x + 'px, ' + y + 'px) scale(1.1)';
+// [existing imports and function setup omitted for brevity]
+
+useEffect(() => {
+    let lFollowX = 0,
+        lFollowY = 0,
+        x = 0,
+        y = 0,
+        friction = 1 / 50; 
+
+    function moveBackground() {
+        if (!movingBackground.current) return;
+
+        x += (lFollowX - x) * friction;
+        y += (lFollowY - y) * friction;
+        var translate = 'translate(' + x + 'px, ' + y + 'px) scale(1.1)';
+
+        if (movingBackground.current) {
             movingBackground.current.style.transform = translate;
-            window.requestAnimationFrame(moveBackground);
         }
-          
-        window.addEventListener('mousemove', function(e) {
-            var lMouseX = Math.max(-100, Math.min(100, windowSize.innerWidth / 2 - e.clientX));
-            var lMouseY = Math.max(-100, Math.min(100, windowSize.innerHeight / 2 - e.clientY));
-            lFollowX = (20 * lMouseX) / 100; 
-            lFollowY = (10 * lMouseY) / 100;
-        });
-          
-        moveBackground();
-    }, [windowSize.innerHeight, windowSize.innerWidth])
+
+        window.requestAnimationFrame(moveBackground);
+    }
+
+    window.addEventListener('mousemove', function(e) {
+        var lMouseX = Math.max(-100, Math.min(100, windowSize.innerWidth / 2 - e.clientX));
+        var lMouseY = Math.max(-100, Math.min(100, windowSize.innerHeight / 2 - e.clientY));
+        lFollowX = (20 * lMouseX) / 100; 
+        lFollowY = (10 * lMouseY) / 100;
+    });
+
+    moveBackground();
+}, [windowSize.innerHeight, windowSize.innerWidth]);
 
     // Animations
     const backgroundRef = useSpringRef();

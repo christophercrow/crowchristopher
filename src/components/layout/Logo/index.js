@@ -10,7 +10,7 @@ const LogoWrapper = styled.div`
     width: 64px;
     height: 64px;
     border-radius: 5px;
-    background: #47FFE9;
+    background:rgb(255, 255, 255);
     display: flex;
     h1 {
         font-size: 48px;
