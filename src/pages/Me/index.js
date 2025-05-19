@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ScrollContainer, ScrollPage, Animator, batch, Sticky, Fade, MoveIn, ZoomIn } from 'react-scroll-motion';
 import { Link } from 'react-router-dom';
-import Cursor from "../../components/Cursor"; // Reintroduce your custom cursor component
-
+import Cursor from '../../components/ui/Cursor';
 
 
 

@@ -4,8 +4,7 @@ import Home from './pages/Home';
 import Me from './pages/Me'
 import Works from './pages/Works'
 import BlogPage from "./pages/Blog";
-import BlogDetail from "./components/BlogDetail";
-
+import BlogDetail from './components/features/BlogDetail';
 function App() {
   return (
     <Routes>

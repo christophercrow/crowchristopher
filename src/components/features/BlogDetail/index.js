@@ -1,11 +1,12 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import styled from "styled-components";
-import { useSpring, a, useSpringRef, useChain } from "@react-spring/web";
-import DesktopNav from "../DesktopNav";
-import SocialIcons from "../SocialIcons";
-import Cursor from "../Cursor";
-import blogConfig from "../../data/blogConfig.json";
+import styled from 'styled-components';
+import { Link, useParams } from 'react-router-dom';
+import { a, useChain, useSpring, useSpringRef } from '@react-spring/web';
+
+import DesktopNav from '../../layout/DesktopNav';
+import SocialIcons from '../../ui/SocialIcons';
+import Cursor from '../../ui/Cursor';
+import blogConfig from '../../../data/blogConfig.json';
+
 
 const BlogDetail = () => {
     const { id } = useParams();

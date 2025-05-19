@@ -12,11 +12,13 @@ import Cursor from "../../components/ui/Cursor";
 import bgDesktop from "../../assets/images/bg.jpg";
 
 import { Helmet } from "react-helmet";
-import favicon from '../../assets/images/favicon.ico';
-import appleIcon from '../../assets/images/apple-touch-icon.png';
-import favicon32 from '../../assets/images/favicon-32x32.png';
-import favicon16 from '../../assets/images/favicon-16x16.png';
-import siteManifest from '../../assets/images/site.webmanifest';
+import favicon from '../../assets/icons/favicon.ico';
+import appleIcon from '../../assets/icons/apple-touch-icon.png';
+import favicon32 from '../../assets/icons/favicon-32x32.png';
+import favicon16 from '../../assets/icons/favicon-16x16.png';
+import siteManifest from '../../assets/icons/site.webmanifest';
+
+
 
 import { a, useChain, useSpring, useTrail, useSpringRef } from "@react-spring/web";
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import DescCard from "../DescCard";
+import DescCard from '../../features/DescCard';
 
 export default function Cursor({ project }) {
     const delay = 18;

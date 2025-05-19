@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import searchIcon from "../../images/searchIcon.svg";
+import searchIcon from '../../../assets/icons/searchIcon.svg';
 
 export default function Search({ winkconfig, querychange, autofocus }) {
     const [query, setQuery] = useState("");

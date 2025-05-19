@@ -1,4 +1,5 @@
 // Refactored Blog Page Imports
+import { a, useChain, useSpring, useTrail, useSpringRef, useTransition } from '@react-spring/web';
 
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -11,14 +12,11 @@ import SocialIcons from "../../components/ui/SocialIcons";
 import Search from "../../components/features/Search";
 import BlogCard from "../../components/features/BlogCard";
 
-// Updated metadata and asset paths
-import favicon from '../../assets/images/favicon.ico';
-import appleIcon from '../../assets/images/apple-touch-icon.png';
-import favicon32 from '../../assets/images/favicon-32x32.png';
-import favicon16 from '../../assets/images/favicon-16x16.png';
-import siteManifest from '../../assets/images/site.webmanifest';
-
-import { useTrail, a, useChain, useSpring, useSpringRef, useTransition } from '@react-spring/web';
+import favicon from '../../assets/icons/favicon.ico';
+import appleIcon from '../../assets/icons/apple-touch-icon.png';
+import favicon32 from '../../assets/icons/favicon-32x32.png';
+import favicon16 from '../../assets/icons/favicon-16x16.png';
+import siteManifest from '../../assets/icons/site.webmanifest';
 
 // Updated data config path
 import blogConfig from '../../data/blogConfig.json';
