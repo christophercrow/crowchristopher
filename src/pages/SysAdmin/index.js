@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, useAnimationFrame } from "framer-motion";
 import styled from "styled-components";
-import Animated3DPinCardFramer from "../../components/framer/3dpin-card";
 import CustomCursor from "../../components/ui/Cursor";
-import sysAdminData from "../../data/sysAdminData.json";
+import Animated3DPinCardFramer from "../../components/framer/3dpin-card"; // Use the improved version!
+import GridBg from "../../components/ui/GridBg";
 
 // IMAGES AND ICONS
 import imgLinux from "../../assets/images/sysadmin-linux.png";
@@ -42,48 +41,43 @@ const imgMap = {
   "System Monitoring Stack": imgMonitoring,
 };
 
-const CARDS_ON_SCREEN = 3.5;
-const CARD_GAP = 60; // px
+const techIconsMap = {
+  "Linux Server Hardening": [<DiLinux size={32} color="#fa5656" key="linux"/>],
+  "Ansible Automation": [<SiAnsible size={32} color="#ff9800" key="ansible"/>],
+  "Dockerized Infrastructure": [<FaDocker size={32} color="#41b6ff" key="docker"/>],
+  "System Monitoring Stack": [<SiGrafana size={32} color="#ffe158" key="grafana"/>],
+};
+
+const projectData = [
+  {
+    title: "Linux Server Hardening",
+    description:
+      "Configured and secured Ubuntu/CentOS servers using firewall rules, SSH lockdown, automatic updates, and auditing tools.",
+  },
+  {
+    title: "Ansible Automation",
+    description:
+      "Automated provisioning and updates across environments using Ansible playbooks and roles.",
+  },
+  {
+    title: "Dockerized Infrastructure",
+    description:
+      "Containerized Nginx, PostgreSQL, and scripts to streamline deployment and scaling.",
+  },
+  {
+    title: "System Monitoring Stack",
+    description:
+      "Deployed Prometheus, Grafana, and alerting for robust system monitoring.",
+  },
+];
 
 export default function SysAdmin() {
   const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 
-  // Responsive card width
-  const [cardWidth, setCardWidth] = useState(
-    Math.floor(window.innerWidth / CARDS_ON_SCREEN) - CARD_GAP
-  );
-  useEffect(() => {
-    function handleResize() {
-      setCardWidth(Math.floor(window.innerWidth / CARDS_ON_SCREEN) - CARD_GAP);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Carousel logic
-  const cardsToShow = [...sysAdminData, ...sysAdminData]; // double for seamless wrap
-  const totalCards = cardsToShow.length;
-  const totalWidth = totalCards * (cardWidth + CARD_GAP);
-
-  const [x, setX] = useState(0);
-  const carouselSpeed = hoveredIndex !== -1 ? 50 : 180; // px/sec
-
-  // SEAMLESS LOOP LOGIC
-  useAnimationFrame((_, delta) => {
-    setX((prev) => {
-      let next = prev - (delta / 1000) * carouselSpeed;
-      // If scrolled past half, reset to 0 for seamless effect
-      if (next <= -totalWidth / 2) {
-        return 0;
-      }
-      return next;
-    });
-  });
-
   return (
     <PageWrapper>
-      {/* Always on top cursor */}
+      <GridBg />
       <CustomCursor zIndex={9999} />
 
       <NavBar>
@@ -97,78 +91,67 @@ export default function SysAdmin() {
         <Title onClick={() => alert("Show terminal here!")}>
           System <span style={{ color: "#7ecad7" }}>Administration</span>
         </Title>
-        <Subheader>Hover a card to slow down &amp; reveal its stack.</Subheader>
+        <Subheader>Hover a card for tech stack &amp; 3D tilt.</Subheader>
         <Subheader2>Click the header for terminal.</Subheader2>
       </HeaderSection>
 
       <ContentSection>
-        <CarouselWrap>
-          <CarouselScroller
-            as={motion.div}
-            style={{ x, width: totalWidth }}
-          >
-            {cardsToShow.map((entry, idx) => {
-              const slug = entry.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-              const borderColor = borderMap[entry.title] || "#eee";
-              const pinColor = pinColorMap[entry.title] || "#4af";
-              return (
-                <CardWrapper
-                  key={`${entry.title}-${idx}`}
-                  style={{
-                    minWidth: cardWidth,
-                    maxWidth: cardWidth,
-                    height: "500px",
-                    marginRight: CARD_GAP,
+        <CardsRow>
+          {projectData.map((entry, idx) => {
+            const slug = entry.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "");
+            const borderColor = borderMap[entry.title] || "#eee";
+            const pinColor = pinColorMap[entry.title] || "#4af";
+            return (
+              <CardContainer
+                key={entry.title}
+                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseLeave={() => setHoveredIndex(-1)}
+              >
+                <Animated3DPinCardFramer
+                  icon={iconMap[entry.title]}
+                  title={{
+                    text: entry.title,
+                    font: { fontSize: "1.55rem", fontWeight: 900 },
+                    color: borderColor,
                   }}
-                  onMouseEnter={() => setHoveredIndex(idx)}
-                  onMouseLeave={() => setHoveredIndex(-1)}
-                >
-                  <Animated3DPinCardFramer
-                    icon={iconMap[entry.title]}
-                    title={{
-                      text: entry.title,
-                      font: { fontSize: "1.55rem", fontWeight: 900 },
-                      color: borderColor,
-                    }}
-                    subtitle={{
-                      text: entry.description,
-                      font: { fontSize: "1.15rem", fontWeight: 600 },
-                      color: "#dadada",
-                    }}
-                    image={{
-                      image: { src: imgMap[entry.title] },
-                      marginRight: "10px",
-                      borderRadius: "18px",
-                      marginTop: "0",
-                      marginRight: "50pt",
-                      width: "100%",
-                    }}
-                    cardBody={{
-                      borderRadius: 18,
-                      borderColor,
-                      borderHoverColor: borderColor,
-                      backgroundColor: "#191f23",
-                      borderWidth: 3.2,
-                    }}
-                    pin={{
-                      title: "View Project",
-                      link: `/sysadmin/${slug}`,
-                      linkTarget: "self",
-                      backgroundColor: `${pinColor}22`,
-                      textColor: pinColor,
-                      lineColorPrimary: pinColor,
-                      lineColorSecondary: "#fff9",
-                      font: { fontSize: "1.08rem", fontWeight: 700 },
-                    }}
-                    onPinClick={() => navigate(`/sysadmin/${slug}`)}
-                    hovered={hoveredIndex === idx}
-                    techIconsAbovePin={true}
-                  />
-                </CardWrapper>
-              );
-            })}
-          </CarouselScroller>
-        </CarouselWrap>
+                  subtitle={{
+                    text: entry.description,
+                    font: { fontSize: "1.15rem", fontWeight: 600 },
+                    color: "#dadada",
+                  }}
+                  image={{
+                    image: { src: imgMap[entry.title] },
+                    borderRadius: "18px",
+                    marginTop: "0",
+                    width: "100%",
+                  }}
+                  cardBody={{
+                    borderRadius: 18,
+                    borderColor,
+                    borderHoverColor: borderColor,
+                    backgroundColor: "#191f23",
+                    borderWidth: 3.2,
+                  }}
+                  pin={{
+                    title: slug,
+                    backgroundColor: "#222",
+                    textColor: "#fff",
+                    lineColorPrimary: pinColor,
+                    lineColorSecondary: "#fff9",
+                    font: { fontSize: "1.08rem", fontWeight: 700 },
+                  }}
+                  onPinClick={() => navigate(`/sysadmin/${slug}`)}
+                  hovered={hoveredIndex === idx}
+                  techIcons={techIconsMap[entry.title]}
+                  techIconsAbovePin={true}
+                />
+              </CardContainer>
+            );
+          })}
+        </CardsRow>
       </ContentSection>
       <Spacer />
     </PageWrapper>
@@ -180,6 +163,9 @@ export default function SysAdmin() {
 const PageWrapper = styled.div`
   background: url(${imgBG}) center center;
   min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  position: relative;
 `;
 
 const NavBar = styled.nav`
@@ -189,6 +175,7 @@ const NavBar = styled.nav`
   gap: 2.5rem;
   padding: 1.6rem 3.2rem 0 0;
   background: transparent;
+  z-index: 10;
 `;
 
 const NavButton = styled.div`
@@ -207,7 +194,9 @@ const HeaderSection = styled.div`
   width: 100vw;
   text-align: center;
   margin-top: 1rem;
-  margin-bottom: 5rem;
+  margin-bottom: 4.2rem;
+  z-index: 5;
+  position: relative;
 `;
 
 const Title = styled.h1`
@@ -226,14 +215,14 @@ const Title = styled.h1`
 
 const Subheader = styled.div`
   color: #fff;
-  font-size: 1.45rem;
+  font-size: 1.38rem;
   font-weight: 700;
   margin-bottom: 0.1rem;
 `;
 
 const Subheader2 = styled.div`
   color: #fff;
-  font-size: 1.18rem;
+  font-size: 1.11rem;
   font-weight: 400;
   margin-bottom: 0.6rem;
 `;
@@ -244,36 +233,31 @@ const ContentSection = styled.div`
   justify-content: center;
   align-items: flex-start;
   min-height: 700px;
-  opacity: 0.85;
+  opacity: 0.96;
+  z-index: 2;
+  position: relative;
 `;
 
-const CarouselWrap = styled.div`
-  overflow-x: visible;
-  width: 100vw;
-  min-height: 550px;
-  display: flex;
-  justify-content: center;
-`;
-
-const CarouselScroller = styled(motion.div)`
+const CardsRow = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: ${CARD_GAP}px;
-  will-change: transform;
+  gap: 36px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1400px;
+  flex-wrap: wrap;
 `;
 
-const CardWrapper = styled(motion.div)`
-  position: relative;
-  background: none;
-  box-shadow: none;
-  margin: 1rem;
+const CardContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  position: relative;
+  /* Give more top margin if you want more space for the pin */
+  margin-top: 58px;
 `;
 
 const Spacer = styled.div`
-  height: 700px;
+  height: 120px;
 `;
-
