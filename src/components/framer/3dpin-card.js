@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 
+// You can pass techIcons as array: [<SiDocker />, <SiNginx />, ...]
 export default function Animated3DPinCardFramer(props) {
+  const [hovered, setHovered] = useState(false);
+
   const contentStyle = {
     display: "flex",
     flexDirection: "column",
-    padding: "16px",
-    gap: "0.5rem",
-    color: "rgba(233, 233, 233, 0.9)",
+    padding: "32px", // <-- More padding for spaciousness
+    gap: "1.2rem",
+    color: "rgba(233, 233, 233, 0.95)",
     width: "100%",
-    minWidth: "18rem",
+    minWidth: "19rem",
     height: "fit-content",
   };
 
-  // title/subtitle styles pulled from props
   const titleStyle = {
     ...props.title.font,
     marginTop: props.title.marginTop,
@@ -32,7 +34,7 @@ export default function Animated3DPinCardFramer(props) {
 
   const imageBoxStyle = {
     width: "100%",
-    height: "200px",
+    height: "220px",
     borderRadius: props.image.borderRadius,
     marginTop: props.image.marginTop,
     backgroundImage: props.image.image?.src
@@ -44,10 +46,10 @@ export default function Animated3DPinCardFramer(props) {
 
   return (
     <LazyMotion strict features={domAnimation}>
-      <PinContainer {...props}>
+      <PinContainer {...props} hovered={hovered} setHovered={setHovered}>
         <div style={contentStyle}>
           {props.icon && (
-            <div style={{ marginBottom: "0.5rem", textAlign: "center" }}>
+            <div style={{ marginBottom: "0.8rem", textAlign: "center" }}>
               {props.icon}
             </div>
           )}
@@ -55,25 +57,24 @@ export default function Animated3DPinCardFramer(props) {
           <p style={subtitleStyle}>{props.subtitle.text}</p>
           <div style={imageBoxStyle} />
         </div>
+        {/* Tech icons + Pin Marker (only render if techIconsAbovePin=true) */}
+        <PinMarkerAndOrbit
+          hovered={hovered}
+          pin={props.pin}
+          onPinClick={props.onPinClick}
+          techIcons={props.techIcons}
+        />
       </PinContainer>
     </LazyMotion>
   );
 }
 
-export const PinContainer = ({
-  children,
-  cardBody,
-  pin,
-  onPinClick, // passed from index.js
-}) => {
-  const [hovered, setHovered] = useState(false);
-
-  // Per-instance transform
+const PinContainer = ({ children, cardBody, hovered, setHovered }) => {
+  // 3D effect stays
   const transform = hovered
-    ? "translate(-50%,-50%) rotateX(40deg) scale(0.8)"
+    ? "translate(-50%,-50%) rotateX(35deg) scale(0.94)"
     : "translate(-50%,-50%) rotateX(0deg) scale(1)";
 
-  // wrapper to capture hover
   const wrapperStyle = {
     position: "relative",
     width: "100%",
@@ -81,7 +82,6 @@ export const PinContainer = ({
     zIndex: 50,
   };
 
-  // perspective and content
   const perspectiveStyle = {
     perspective: "1000px",
     position: "absolute",
@@ -94,15 +94,18 @@ export const PinContainer = ({
     position: "absolute",
     left: "50%",
     top: "50%",
-    padding: "16px",
     display: "flex",
     justifyContent: "flex-start",
     borderRadius: cardBody.borderRadius,
-    border: `${cardBody.borderWidth}px solid ${
+    border: `${cardBody.borderWidth || 4}px solid ${
       hovered ? cardBody.borderHoverColor : cardBody.borderColor
     }`,
     backgroundColor: cardBody.backgroundColor,
     transition: "transform 0.7s, border-color 0.7s",
+    width: "100%",
+    height: "100%",
+    boxSizing: "border-box",
+    padding: 0, // Padding is in child div
   };
 
   return (
@@ -114,78 +117,94 @@ export const PinContainer = ({
       <div style={perspectiveStyle}>
         <div style={contentWrapperStyle}>{children}</div>
       </div>
-      <PinPerspective pin={pin} hovered={hovered} onClick={onPinClick} />
     </div>
   );
 };
 
-export const PinPerspective = ({ pin, hovered, onClick }) => {
-  // static lines & button
-  const containerStyle = {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    left: 0,
-    top: 0,
-    opacity: hovered ? 1 : 0,
-    transition: "opacity 0.5s",
-    perspective: "1000px",
-  };
-
+// Pin marker + orbiting tech icons
+const PinMarkerAndOrbit = ({ hovered, pin, onPinClick, techIcons = [] }) => {
+  // Arrange icons in a semi-circle above pin marker
+  const orbitRadius = 68;
+  const orbitAngleStep =
+    techIcons.length > 1 ? Math.PI / (techIcons.length - 1) : 0;
   return (
-    <m.div style={containerStyle}>
+    <div style={{ position: "absolute", left: "50%", bottom: "38px", width: "0", zIndex: 2 }}>
+      {/* Orbiting icons */}
+      {techIcons.map((icon, i) => {
+        const angle = Math.PI + i * orbitAngleStep; // from left to right, semicircle
+        return (
+          <m.div
+            key={i}
+            initial={{ y: 0, x: 0, opacity: 0 }}
+            animate={
+              hovered
+                ? {
+                    y: Math.sin(angle) * orbitRadius - 42,
+                    x: Math.cos(angle) * orbitRadius,
+                    opacity: 1,
+                    scale: 1.2,
+                  }
+                : { y: 0, x: 0, opacity: 0, scale: 0.5 }
+            }
+            transition={{
+              type: "spring",
+              stiffness: 420,
+              damping: 18,
+              delay: hovered ? i * 0.09 : 0,
+            }}
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translate(-50%, 0)",
+              fontSize: "2.1rem",
+              zIndex: 8,
+              filter: "drop-shadow(0 3px 14px rgba(0,0,0,0.5))",
+              pointerEvents: "none",
+            }}
+          >
+            {icon}
+          </m.div>
+        );
+      })}
+
+      {/* PIN MARKER */}
       <m.div
-        initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
-        animate={{ opacity: [0, 1, 0.5, 0], scale: 1 }}
-        transition={{ duration: 6, repeat: Infinity, delay: 0 }}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{
+          opacity: hovered ? 1 : 0,
+          scale: hovered ? 1.15 : 0.7,
+        }}
+        transition={{ duration: 0.3 }}
         style={{
           position: "absolute",
           left: "50%",
-          top: "50%",
-          width: "11.25rem",
-          height: "11.25rem",
-          borderRadius: "50%",
-          backgroundColor: "rgba(172,172,172,0.08)",
+          bottom: "-20px",
+          width: "13px",
+          height: "68px",
+          borderRadius: "9999px",
+          background: pin.lineColorPrimary,
+          border: `4px solid ${pin.lineColorSecondary}`,
+          boxShadow: `0 0 16px 2px ${pin.lineColorPrimary}44`,
+          transform: "translate(-50%, 0)",
         }}
       />
+      {/* Pin button */}
       <m.div
-        className="pin-line"
+        onClick={onPinClick}
         style={{
           position: "absolute",
-          right: "50%",
-          bottom: "50%",
-          width: "1px",
-          height: hovered ? "130px" : "80px",
-          backgroundImage: `linear-gradient(to bottom, transparent, ${pin.lineColorPrimary})`,
-          transition: "height 0.5s",
-        }}
-      />
-      <m.div
-        className="pin-line"
-        style={{
-          position: "absolute",
-          right: "50%",
-          bottom: "50%",
-          width: "1px",
-          height: hovered ? "130px" : "80px",
-          backgroundImage: `linear-gradient(to bottom, transparent, ${pin.lineColorSecondary})`,
-          transition: "height 0.5s",
-        }}
-      />
-      <div
-        onClick={onClick}
-        style={{
-          position: "absolute",
-          bottom: "40px",
+          bottom: "-70px",
           left: "50%",
           transform: "translateX(-50%)",
-          display: "flex",
-          alignItems: "center",
-          padding: "4px 12px",
+          padding: "7px 22px",
           borderRadius: "9999px",
           backgroundColor: pin.backgroundColor,
           cursor: "pointer",
+          zIndex: 4,
+          border: `2.5px solid ${pin.textColor}`,
+          boxShadow: `0 2px 18px 0 ${pin.textColor}22`,
         }}
+        whileTap={{ scale: 0.98 }}
       >
         <span
           style={{
@@ -196,7 +215,7 @@ export const PinPerspective = ({ pin, hovered, onClick }) => {
         >
           {pin.title}
         </span>
-      </div>
-    </m.div>
+      </m.div>
+    </div>
   );
 };

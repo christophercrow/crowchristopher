@@ -1,175 +1,279 @@
-import { useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Helmet } from "react-helmet";
+import { motion, useAnimationFrame } from "framer-motion";
 import styled from "styled-components";
-import bgDesktop from "../../assets/images/server-room.jpg";
-
-import Cursor from "../../components/ui/Cursor";
 import Animated3DPinCardFramer from "../../components/framer/3dpin-card";
+import CustomCursor from "../../components/ui/Cursor";
 import sysAdminData from "../../data/sysAdminData.json";
 
-// logos for each project
+// IMAGES AND ICONS
+import imgLinux from "../../assets/images/sysadmin-linux.png";
+import imgAnsible from "../../assets/images/sysadmin-ansible.png";
+import imgDocker from "../../assets/images/sysadmin-docker.png";
+import imgMonitoring from "../../assets/images/sysadmin-monitoring.png";
 import { DiLinux } from "react-icons/di";
 import { SiAnsible, SiGrafana } from "react-icons/si";
 import { FaDocker } from "react-icons/fa";
+import imgBG from "../../assets/images/server-room.jpg";
 
+// --- Mappings ---
+const borderMap = {
+  "Linux Server Hardening": "#fa5656",
+  "Ansible Automation": "#ff9800",
+  "Dockerized Infrastructure": "#41b6ff",
+  "System Monitoring Stack": "#ffe158",
+};
+const pinColorMap = {
+  "Linux Server Hardening": "#fa5656",
+  "Ansible Automation": "#ff9800",
+  "Dockerized Infrastructure": "#41b6ff",
+  "System Monitoring Stack": "#ffe158",
+};
 const iconMap = {
-  "Linux Server Hardening": <DiLinux size={48} color="#fff" />,
-  "Ansible Automation":    <SiAnsible size={48} color="#fff" />,
-  "Dockerized Infrastructure": <FaDocker size={48} color="#fff" />,
-  "System Monitoring Stack":   <SiGrafana size={48} color="#fff" />,
+  "Linux Server Hardening": <DiLinux size={46} color="#fa5656" />,
+  "Ansible Automation": <SiAnsible size={46} color="#ff9800" />,
+  "Dockerized Infrastructure": <FaDocker size={46} color="#41b6ff" />,
+  "System Monitoring Stack": <SiGrafana size={46} color="#ffe158" />,
+};
+const imgMap = {
+  "Linux Server Hardening": imgLinux,
+  "Ansible Automation": imgAnsible,
+  "Dockerized Infrastructure": imgDocker,
+  "System Monitoring Stack": imgMonitoring,
 };
 
-const containerVariants = {
-  hidden:  { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-};
+const CARDS_ON_SCREEN = 3.5;
+const CARD_GAP = 60; // px
 
 export default function SysAdmin() {
   const navigate = useNavigate();
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  // Responsive card width
+  const [cardWidth, setCardWidth] = useState(
+    Math.floor(window.innerWidth / CARDS_ON_SCREEN) - CARD_GAP
+  );
+  useEffect(() => {
+    function handleResize() {
+      setCardWidth(Math.floor(window.innerWidth / CARDS_ON_SCREEN) - CARD_GAP);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Carousel logic
+  const cardsToShow = [...sysAdminData, ...sysAdminData]; // double for seamless wrap
+  const totalCards = cardsToShow.length;
+  const totalWidth = totalCards * (cardWidth + CARD_GAP);
+
+  const [x, setX] = useState(0);
+  const carouselSpeed = hoveredIndex !== -1 ? 50 : 180; // px/sec
+
+  // SEAMLESS LOOP LOGIC
+  useAnimationFrame((_, delta) => {
+    setX((prev) => {
+      let next = prev - (delta / 1000) * carouselSpeed;
+      // If scrolled past half, reset to 0 for seamless effect
+      if (next <= -totalWidth / 2) {
+        return 0;
+      }
+      return next;
+    });
+  });
 
   return (
-    <PageWrapper
-      as={motion.div}
-      initial={{ scale: 1.1, opacity: 0 }}
-      animate={{ scale: 1,   opacity: 1 }}
-      transition={{ duration: 1.2 }}
-    >
-      <Cursor />
+    <PageWrapper>
+      {/* Always on top cursor */}
+      <CustomCursor zIndex={9999} />
 
-      <Helmet>
-        <title>System Administration | Christopher Crow</title>
-        <meta
-          name="description"
-          content="System administration projects and skills of Christopher Crow."
-        />
-      </Helmet>
+      <NavBar>
+        <NavButton>Home</NavButton>
+        <NavButton>Works</NavButton>
+        <NavButton>Blog</NavButton>
+        <NavButton>Me</NavButton>
+      </NavBar>
 
-      <HeaderBar>
-        <BackLink to="/">← Back to Home</BackLink>
-      </HeaderBar>
+      <HeaderSection>
+        <Title onClick={() => alert("Show terminal here!")}>
+          System <span style={{ color: "#7ecad7" }}>Administration</span>
+        </Title>
+        <Subheader>Hover a card to slow down &amp; reveal its stack.</Subheader>
+        <Subheader2>Click the header for terminal.</Subheader2>
+      </HeaderSection>
 
-      <HeroSection
-        as={motion.div}
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-      >
-        <h1>System Administration</h1>
-        <p>I manage and automate secure, scalable systems. Click below to explore each project.</p>
-      </HeroSection>
-
-      <CardGrid
-        as={motion.div}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {sysAdminData.map((entry) => {
-          const slug = entry.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
-          return (
-            <Animated3DPinCardFramer
-              key={entry.title}
-              // top‐of‐card logo
-              icon={iconMap[entry.title]}
-              // title & subtitle from JSON
-              title={{
-                text: entry.title,
-                font: { fontSize: "1.1rem" },
-                marginTop: "0",
-                marginBottom: "0.5rem",
-              }}
-              subtitle={{
-                text: entry.description,
-                font: { fontSize: "0.9rem" },
-                marginTop: "0",
-                marginBottom: "1rem",
-              }}
-              // no custom image → fallback unsplash
-              image={{
-                image: {},
-                borderRadius: "8px",
-                marginTop: "0",
-              }}
-              // card background + border
-              cardBody={{
-                borderRadius: 16,
-                borderColor: "rgba(255,255,255,0.2)",
-                borderHoverColor: "rgba(255,255,255,0.6)",
-                backgroundColor: "rgba(0,0,0,0.6)",
-                borderWidth: 1,
-              }}
-              // bottom “pin” button
-              pin={{
-                title: "View Project",
-                link: `/sysadmin/${slug}`,
-                linkTarget: "self",
-                backgroundColor: (() => {
-                  switch (entry.title) {
-                    case "Linux Server Hardening":       return "rgba(60,60,60,0.8)";
-                    case "Ansible Automation":           return "rgba(229,66,52,0.8)";
-                    case "Dockerized Infrastructure":    return "rgba(36,150,237,0.8)";
-                    case "System Monitoring Stack":      return "rgba(234,184,57,0.8)";
-                    default:                             return "rgba(30,136,229,0.8)";
-                  }
-                })(),
-                textColor: "#fff",
-                titleUnderlineColor: "#fff",
-                lineColorPrimary:   "#fff",
-                lineColorSecondary: "rgba(255,255,255,0.6)",
-                font: { fontSize: "0.85rem" },
-              }}
-              onPinClick={() => navigate(`/sysadmin/${slug}`)}
-            />
-          );
-        })}
-      </CardGrid>
+      <ContentSection>
+        <CarouselWrap>
+          <CarouselScroller
+            as={motion.div}
+            style={{ x, width: totalWidth }}
+          >
+            {cardsToShow.map((entry, idx) => {
+              const slug = entry.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+              const borderColor = borderMap[entry.title] || "#eee";
+              const pinColor = pinColorMap[entry.title] || "#4af";
+              return (
+                <CardWrapper
+                  key={`${entry.title}-${idx}`}
+                  style={{
+                    minWidth: cardWidth,
+                    maxWidth: cardWidth,
+                    height: "500px",
+                    marginRight: CARD_GAP,
+                  }}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(-1)}
+                >
+                  <Animated3DPinCardFramer
+                    icon={iconMap[entry.title]}
+                    title={{
+                      text: entry.title,
+                      font: { fontSize: "1.55rem", fontWeight: 900 },
+                      color: borderColor,
+                    }}
+                    subtitle={{
+                      text: entry.description,
+                      font: { fontSize: "1.15rem", fontWeight: 600 },
+                      color: "#dadada",
+                    }}
+                    image={{
+                      image: { src: imgMap[entry.title] },
+                      marginRight: "10px",
+                      borderRadius: "18px",
+                      marginTop: "0",
+                      marginRight: "50pt",
+                      width: "100%",
+                    }}
+                    cardBody={{
+                      borderRadius: 18,
+                      borderColor,
+                      borderHoverColor: borderColor,
+                      backgroundColor: "#191f23",
+                      borderWidth: 3.2,
+                    }}
+                    pin={{
+                      title: "View Project",
+                      link: `/sysadmin/${slug}`,
+                      linkTarget: "self",
+                      backgroundColor: `${pinColor}22`,
+                      textColor: pinColor,
+                      lineColorPrimary: pinColor,
+                      lineColorSecondary: "#fff9",
+                      font: { fontSize: "1.08rem", fontWeight: 700 },
+                    }}
+                    onPinClick={() => navigate(`/sysadmin/${slug}`)}
+                    hovered={hoveredIndex === idx}
+                    techIconsAbovePin={true}
+                  />
+                </CardWrapper>
+              );
+            })}
+          </CarouselScroller>
+        </CarouselWrap>
+      </ContentSection>
+      <Spacer />
     </PageWrapper>
   );
 }
 
-// ─── Styled-components ─────────────────────────────────
+// ---- STYLES ----
 
 const PageWrapper = styled.div`
-  background: url(${bgDesktop}) no-repeat center center fixed;
-  background-size: cover;
-  padding: 2rem;
-  color: #fff;
+  background: url(${imgBG}) center center;
   min-height: 100vh;
 `;
 
-const HeaderBar = styled.div`
-  position: absolute;
-  top: 1.5rem;
-  left: 2rem;
+const NavBar = styled.nav`
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2.5rem;
+  padding: 1.6rem 3.2rem 0 0;
+  background: transparent;
 `;
 
-const BackLink = styled.a`
+const NavButton = styled.div`
+  font-size: 1.25rem;
   color: #fff;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: opacity 0.3s ease;
-  &:hover { opacity: 0.7; }
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.19s cubic-bezier(.53,.1,.61,.97), color 0.23s;
+  &:hover {
+    color: #7ecad7;
+    transform: scale(1.19);
+  }
 `;
 
-const HeroSection = styled.div`
+const HeaderSection = styled.div`
+  width: 100vw;
   text-align: center;
-  margin: 5rem 0 3rem;
-  h1 { font-size: 3rem; margin-bottom: 1rem; }
-  p  { font-size: 1.25rem; }
+  margin-top: 1rem;
+  margin-bottom: 5rem;
 `;
 
-const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  justify-items: center;
-  max-width: 900px;
-  margin: 0 auto;
+const Title = styled.h1`
+  font-size: 4.1rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  color: #ffba8b;
+  margin-bottom: 0.6rem;
+  transition: transform 0.23s cubic-bezier(.53,.1,.61,.97), color 0.24s;
+  cursor: pointer;
+  &:hover {
+    color: #7ecad7;
+    transform: scale(1.09);
+  }
 `;
+
+const Subheader = styled.div`
+  color: #fff;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+`;
+
+const Subheader2 = styled.div`
+  color: #fff;
+  font-size: 1.18rem;
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+`;
+
+const ContentSection = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 700px;
+  opacity: 0.85;
+`;
+
+const CarouselWrap = styled.div`
+  overflow-x: visible;
+  width: 100vw;
+  min-height: 550px;
+  display: flex;
+  justify-content: center;
+`;
+
+const CarouselScroller = styled(motion.div)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: ${CARD_GAP}px;
+  will-change: transform;
+`;
+
+const CardWrapper = styled(motion.div)`
+  position: relative;
+  background: none;
+  box-shadow: none;
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Spacer = styled.div`
+  height: 700px;
+`;
+
