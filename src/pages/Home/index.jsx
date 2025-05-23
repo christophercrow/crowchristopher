@@ -239,20 +239,20 @@ const RoleBadge = styled.div`
   }
 
   &.top-left {
-    left: 1em;
-    top: -1.3em;
+    left: 0em;
+    top: -1.5em;
   }
   &.bottom-left {
-    left: 1em;
-    bottom: -7.1em;
+    left: 0em;
+    bottom: -6.7em;
   }
   &.top-right {
-    right: -26.9em;
-    top: -1.3em;
+    right: -24.7em;
+    top: -1.5em;
   }
   &.bottom-right {
-    right: -26.9em;
-    bottom: -7.1em;
+    right: -24.7em;
+    bottom: -6.7em;
   }
   @media (max-width: 900px) {
     font-size: 1.1em;

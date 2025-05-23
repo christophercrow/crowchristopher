@@ -4,8 +4,8 @@ import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { LazyMotion, domAnimation } from "framer-motion";
 
 // --- Constants ---
-const CARD_WIDTH = 600;
-const CARD_HEIGHT = 800;
+const CARD_WIDTH = 450;
+const CARD_HEIGHT = 600;
 const PIN_HEIGHT = 120;
 const BUTTON_HEIGHT = 52;
 const ICON_SIZE = 34;
