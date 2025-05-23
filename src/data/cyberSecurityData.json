@@ -1,0 +1,27 @@
+[
+    {
+      "title": "Network Security",
+      "description": "Implemented advanced firewall rules, IDS/IPS, and segmentation to protect critical infrastructure.",
+      "tools": ["Wireshark", "Firewall", "IDS", "Encryption"],
+      "year": 2024
+    },
+    {
+      "title": "SIEM & Log Analysis",
+      "description": "Deployed and maintained SIEM tools for threat detection and log correlation.",
+      "tools": ["SIEM", "Splunk", "Python", "MongoDB"],
+      "year": 2024
+    },
+    {
+      "title": "Malware Analysis",
+      "description": "Reverse engineered malware samples using sandboxing, static and dynamic analysis techniques.",
+      "tools": ["Kali Linux", "Python"],
+      "year": 2024
+    },
+    {
+      "title": "Red Team Operations",
+      "description": "Conducted penetration testing and social engineering to assess organizational security.",
+      "tools": ["Kali Linux", "Red Team", "Wireshark"],
+      "year": 2024
+    }
+  ]
+  

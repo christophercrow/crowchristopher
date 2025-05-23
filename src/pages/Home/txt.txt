@@ -1,0 +1,72 @@
+// --- MAIN HOME ---
+export default function Home() {
+  useEffect(() => {
+    if (!document.getElementById("inter-tight-font")) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = FONT_LINK;
+      link.id = "inter-tight-font";
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  return (
+    <>
+      <Cursor />
+      <Helmet>
+        <title>Chris Crow | Portfolio</title>
+      </Helmet>
+      <NavBar />
+      <MainBg>
+        <SplitBg>
+          <LeftSplit>
+          <StarField count={70} shootingStars={1} />            
+          <RealisticNebula />
+          </LeftSplit>
+          <RightSplit>
+            <ElectricArcTree interval={5} />            
+            <TerminalFlicker count={5} areaLeft={0} areaWidth={120} />
+            <BinaryFallingDust count={5} areaLeft={0} areaWidth={120} />
+          </RightSplit>
+      <CenterDivider />
+        </SplitBg>
+        {/* Side cards */}
+        <LeftCard>
+          <Animated3DPinCardFramer {...aboutCardProps} />
+        </LeftCard>
+        <RightCard>
+          <Animated3DPinCardFramer {...projectCardProps} />
+        </RightCard>
+        {/* Orbit photos and name */}
+        {gridTiles.map((tile, i) => (
+          <OrbitPhoto
+            key={i}
+            left={photoLayout[i].left}
+            top={photoLayout[i].top}
+            z={photoLayout[i].z}
+            $delay={i * 0.14 + 0.23}
+            tabIndex={0}
+          >
+            <NativeImg
+              src={tile.img}
+              alt={tile.alt}
+              $width={tile.width}
+              $height={tile.height}
+              draggable={false}
+            />
+            <Overlay className="overlay">{tile.info}</Overlay>
+          </OrbitPhoto>
+        ))}
+        <NameRow>
+        <OrbitingName3D>
+          <NameLeft style={{ pointerEvents: "none" }}>Chris</NameLeft>
+        </OrbitingName3D>
+
+          <NameRight>
+          <GlitchText>Crow</GlitchText>
+          </NameRight>
+        </NameRow>
+      </MainBg>
+    </>
+  );
+}

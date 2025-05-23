@@ -1,0 +1,335 @@
+import styled, { keyframes, css } from "styled-components";
+
+/* --- Main Background Container --- */
+export const MainBg = styled.div`
+  width: 100vw; min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding-top: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+/* --- Split Background --- */
+export const SplitBg = styled.div`
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  z-index: 1;
+`;
+
+export const LeftSplit = styled.div`
+  width: 50vw; height: 110vh;
+  background: linear-gradient(120deg,
+    #221533 70%,
+    #413067 92%,
+    #836fa9 100%
+  );
+  position: relative;
+  overflow: clip;
+`;
+
+export const RightSplit = styled.div`
+  width: 50vw; height: 110vh;
+  background: linear-gradient(120deg,
+    #113122 60%,
+    #1e5042 90%,
+    #57a68b 120%
+  );
+  position: relative;
+  overflow: clip;
+`;
+
+export const CenterDivider = styled.div`
+  position: absolute; left: 50%; top: 0;
+  width: 5px; height: 100vh;
+  background: linear-gradient(180deg, #47ffe9 18%, #00e0ff33 50%, #1a2a41 100%);
+  z-index: 8;
+  opacity: 0.63;
+`;
+
+/* --- Side Cards --- */
+const sideCardAnim = keyframes`
+  from { opacity: 0; transform: translateY(54px) scale(0.90);}
+  to { opacity: 1; transform: translateY(0) scale(1);}
+`;
+
+export const SideCard = styled.div`
+  position: absolute;
+  top: 27%;
+  min-width: 470px; max-width: 600px;
+  min-height: 520px; max-height: 730px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  background: none; border: none; box-shadow: none; z-index: 40;
+  animation: ${css`${sideCardAnim} 1.1s cubic-bezier(.44,1.7,.38,1) 0.7s both`};
+  @media (max-width: 1300px) { display: none; }
+`;
+
+export const LeftCard = styled(SideCard)`
+  left: 2vw; align-items: flex-end;
+`;
+export const RightCard = styled(SideCard)`
+  right: 2vw; align-items: flex-start;
+`;
+
+/* --- Name Row and Badges --- */
+const nameRowAnim = keyframes`
+  from { opacity: 0; transform: scale(0.86) translateY(-90px);}
+  75% { opacity: 1; transform: scale(1.08) translateY(14px);}
+  to { opacity: 1; transform: scale(1) translateY(0);}
+`;
+
+export const NameRow = styled.div`
+  position: absolute;
+  left: 28.4%; top: 35%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  user-select: text;
+  pointer-events: auto;
+  animation: ${css`${nameRowAnim} 1.07s cubic-bezier(.44,1.6,.38,1) both`};
+`;
+
+export const NameLeft = styled.span`
+  font-family: 'Inter Tight', Arial, sans-serif;
+  font-size: 8vw;
+  font-weight: 900;
+  letter-spacing: -2.2px;
+  color: #1a173c;
+  margin: 0 0.09em 0 0;
+  line-height: 1.04;
+  background: linear-gradient(275deg,#6a75b7 40%,#25325c 70%, #48b1eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 5.5px #191a22;
+  text-shadow:
+    0 0 18px #649bec85,
+    0 2px 15px #3a5178;
+  filter: drop-shadow(0 12px 42px #00caff28);
+  transition: text-shadow 0.18s;
+  cursor: pointer;
+  user-select: text;
+  &:hover {
+    text-shadow:
+      0 0 32px #0e0a2f,
+      0 10px 10px #00ffe163,
+      0 2px 26px #1f6febbb;
+  }
+  mix-blend-mode: lighten;
+`;
+
+export const NameRight = styled.span`
+  font-family: 'Inter Tight', Arial, sans-serif;
+  font-size: 8vw;
+  font-weight: 900;
+  letter-spacing: -2.2px;
+  color: #1a173c;
+  margin: 0 0.09em 0 0;
+  line-height: 1.04;
+  background: linear-gradient(275deg,#6a75b7 40%,#25325c 70%, #48b1eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 5.5px #191a22;
+  text-shadow:
+    0 0 18px #649bec85,
+    0 2px 15px #3a5178;
+  filter: drop-shadow(0 12px 42px #00caff28);
+  transition: text-shadow 0.18s;
+  cursor: pointer;
+  user-select: text;
+  &:hover {
+    text-shadow:
+      0 0 32px #0e0a2f,
+      0 10px 10px #00ffe163,
+      0 2px 26px #1f6febbb;
+  }
+  mix-blend-mode: lighten;
+`;
+
+export const NameBadgeWrap = styled.div`
+  position: absolute;
+  left: 28.6%;
+  top: 36.5%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 21;
+  pointer-events: none;
+`;
+
+export const RoleBadge = styled.div`
+  position: absolute;
+  width: 11.2em;
+  height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: linear-gradient(135deg, rgba(36,41,59,0.99) 60%, rgba(44,56,95,0.92) 100%);
+  color: #ffaa00;
+  font-size: 2.5em;
+  font-family: 'Fira Mono', 'Consolas', 'Liberation Mono', monospace;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-radius: 0.6em;
+  border: 2.5px solid transparent;
+  box-shadow:
+    0 3px 22px 4px #47ffe942,
+    0 0.5px 10px 2px #151925d4,
+    0 0 0 4px #1f6feb44;
+  user-select: none;
+  z-index: 50;
+  white-space: nowrap;
+  pointer-events: auto;
+  opacity: 0.99;
+  transition: background 0.25s, color 0.23s, box-shadow 0.23s, border 0.23s;
+  text-shadow:
+    0 2px 14px #47ffe9,
+    0 1.5px 3px #1f6feb,
+    0 0 2px #000;
+  backdrop-filter: blur(3.5px) brightness(0.9);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.1em;
+    border-radius: 0.55em;
+    background: radial-gradient(ellipse at 60% 20%, #47ffe925 28%, transparent 80%);
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(1.5px);
+    opacity: 0.85;
+  }
+
+  &:hover, &:focus {
+    box-shadow:
+      0 6px 38px 8px #47ffe9b7,
+      0 1.5px 20px 5px #1f6febcc,
+      0 0 0 8px #47ffe965;
+    color: #fff;
+    background: linear-gradient(100deg, rgba(44,66,101,0.99) 25%, #1f6feb 85%);
+    outline: black 2px solid;
+  }
+
+  &.top-left {
+    left: 1em;
+    top: -1.3em;
+  }
+  &.bottom-left {
+    left: 1em;
+    bottom: -7.1em;
+  }
+  &.top-right {
+    right: -26.9em;
+    top: -1.3em;
+  }
+  &.bottom-right {
+    right: -26.9em;
+    bottom: -7.1em;
+  }
+  @media (max-width: 900px) {
+    font-size: 1.1em;
+    width: 8.8em;
+    height: 2.2em;
+    padding: 0 0.03em;
+    border-radius: 0.28em;
+    position: static;
+    margin: 0.25em 0.4em;
+    display: inline-flex;
+    box-shadow: 0 4px 24px 0 #47ffe942, 0 1.5px 5px 0 #151925b8;
+  }
+`;
+
+/* --- Scattered Photo --- */
+export const ScatteredPhoto = styled.div`
+  position: absolute;
+  ${({ left, top }) => css`left: ${left}; top: ${top};`}
+  z-index: ${({ z }) => z || 3};
+  transform: ${({ rotate }) => `rotate(${rotate || 0}deg)`};
+  box-shadow:
+    0 10px 32px 0 #182a4444,
+    0 1px 6px 1.5px #131d3351;
+  transition: filter 0.25s, box-shadow 0.25s, transform 0.24s;
+  &:hover, &:focus {
+    z-index: 99;
+    filter: brightness(1.09) saturate(1.11);
+    box-shadow:
+      0 14px 48px 6px #47ffe988,
+      0 2px 22px 6px #1f6feb44;
+    transform: ${({ rotate }) => `scale(1.07) rotate(${rotate || 0}deg)`};
+  }
+`;
+
+/* --- Glitch Text Components --- */
+export const GlitchWrap = styled.span`
+  display: inline-block;
+  position: relative;
+  font-family: 'Inter Tight', 'Montserrat', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 7vw;
+  letter-spacing: -2.1px;
+  text-transform: uppercase;
+  user-select: text;
+  cursor: pointer;
+  line-height: 1.05;
+`;
+
+export const MainLayer = styled.span`
+  position: relative;
+  z-index: 5;
+  background: linear-gradient(99deg, #fff 31%, #2bf4ff 64%, #e636ff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: brightness(1.05) contrast(1.09);
+`;
+
+export const SplitLayer = styled.span`
+  position: absolute;
+  left: 0; top: 0; width: 100%; height: 100%;
+  pointer-events: none; user-select: none;
+  z-index: ${({ z }) => z || 2};
+  color: ${({ color }) => color};
+  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
+  mix-blend-mode: lighten;
+  text-shadow: ${({ color }) =>
+    color === "#0ff"
+      ? "0 0 2px #0ff, 0 0 7px #2bf4ff"
+      : "0 0 2px #ff2e9b, 0 0 7px #e636ff"};
+  transform: ${({ x, y, scale, skewX, skewY }) =>
+    `translate(${x}px, ${y}px) scale(${scale}) skew(${skewX}deg,${skewY}deg)`};
+  filter: blur(${({ blur }) => blur || 0}px);
+  will-change: transform, opacity;
+  transition: opacity 0.14s cubic-bezier(.4,1,.43,1);
+`;
+
+export const SliceLine = styled.span`
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  text-shadow: 0 0 2px #0ff, 1px 1px 8px #e636ff;
+  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
+  filter: blur(${({ blur }) => blur}px);
+  transform: ${({ x, skewX }) => `translateX(${x}px) skewX(${skewX}deg)`};
+  top: ${({ y }) => y}%;
+  height: ${({ height }) => height}%;
+  transition: opacity 0.11s;
+`;

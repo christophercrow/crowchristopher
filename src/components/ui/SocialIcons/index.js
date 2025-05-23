@@ -13,9 +13,7 @@ export default function SocialIcons({ email, color, pagetype, style }) {
             <a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="Github">
                 <FiGithub color={color ? `${color}` : null} />
             </a>
-            <a href="https://twitter.com/" target="_blank" rel="noreferrer" aria-label="Twitter">
-                <FiTwitter color={color ? `${color}` : null} />
-            </a>
+
             <a href="https://www.linkedin.com/in/christopher-crow-915288240/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                 <FiLinkedin color={color ? `${color}` : null} />
             </a>

@@ -44,3 +44,14 @@
   background-color: rgba(229, 128, 128, 0.5);
   z-index: 9998;
 }
+
+
+.cursor-dot,
+.cursor-dot-outline,
+.cursor-trail-star,
+.cursor-electron {
+    pointer-events: none;
+    user-select: none;
+    will-change: transform, filter, background, opacity;
+    mix-blend-mode: lighten;
+}
