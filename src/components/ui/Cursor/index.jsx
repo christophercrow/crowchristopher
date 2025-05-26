@@ -36,7 +36,7 @@ export default function Cursor({ project }) {
   useEffect(() => {
     const handleMouseMove = (e) => {
       cursorVisible.current = true;
-      pos.current = { x: e.pageX, y: e.pageY };
+      pos.current = { x: e.clientX, y: e.clientY }; // <-- This will always match your real cursor!
       setCursorVisibility();
     };
     const handleMouseEnter = () => {

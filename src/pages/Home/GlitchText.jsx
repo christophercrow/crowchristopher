@@ -29,17 +29,17 @@ const SplitLayer = styled.span`
   position: absolute;
   left: 0; top: 0; width: 100%; height: 100%;
   pointer-events: none; user-select: none;
-  z-index: ${({ z }) => z || 2};
-  color: ${({ color }) => color};
-  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
+  z-index: ${({ $z }) => $z || 2};
+  color: ${({ $color }) => $color};
+  opacity: ${({ $glitch, $opacity }) => ($glitch ? $opacity : 0)};
   mix-blend-mode: lighten;
-  text-shadow: ${({ color }) =>
-    color === "#0ff"
+  text-shadow: ${({ $color }) =>
+    $color === "#0ff"
       ? "0 0 2px #0ff, 0 0 7px #2bf4ff"
       : "0 0 2px #ff2e9b, 0 0 7px #e636ff"};
-  transform: ${({ x, y, scale, skewX, skewY }) =>
-    `translate(${x}px, ${y}px) scale(${scale}) skew(${skewX}deg,${skewY}deg)`};
-  filter: blur(${({ blur }) => blur || 0}px);
+  transform: ${({ $x, $y, $scale, $skewX, $skewY }) =>
+    `translate(${$x}px, ${$y}px) scale(${$scale}) skew(${$skewX}deg,${$skewY}deg)`};
+  filter: blur(${({ $blur }) => $blur || 0}px);
   will-change: transform, opacity;
   transition: opacity 0.14s cubic-bezier(.4,1,.43,1);
 `;
@@ -59,11 +59,11 @@ const SliceLine = styled.span`
   text-transform: inherit;
   letter-spacing: inherit;
   text-shadow: 0 0 2px #0ff, 1px 1px 8px #e636ff;
-  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
-  filter: blur(${({ blur }) => blur}px);
-  transform: ${({ x, skewX }) => `translateX(${x}px) skewX(${skewX}deg)`};
-  top: ${({ y }) => y}%;
-  height: ${({ height }) => height}%;
+  opacity: ${({ $glitch, $opacity }) => ($glitch ? $opacity : 0)};
+  filter: blur(${({ $blur }) => $blur}px);
+  transform: ${({ $x, $skewX }) => `translateX(${$x}px) skewX(${$skewX}deg)`};
+  top: ${({ $y }) => $y}%;
+  height: ${({ $height }) => $height}%;
   transition: opacity 0.11s;
 `;
 
@@ -144,30 +144,30 @@ export function GlitchText({ children }) {
     >
       <MainLayer>{children}</MainLayer>
       <SplitLayer
-        color="#ff2e9b"
-        x={split[0].x}
-        y={split[0].y}
-        scale={split[0].scale}
-        opacity={split[0].opacity}
-        blur={split[0].blur}
-        skewX={split[0].skewX}
-        skewY={split[0].skewY}
-        z={6}
+        $color="#ff2e9b"
+        $x={split[0].x}
+        $y={split[0].y}
+        $scale={split[0].scale}
+        $opacity={split[0].opacity}
+        $blur={split[0].blur}
+        $skewX={split[0].skewX}
+        $skewY={split[0].skewY}
+        $z={6}
         $glitch={active}
         aria-hidden
       >
         {children}
       </SplitLayer>
       <SplitLayer
-        color="#0ff"
-        x={split[1].x}
-        y={split[1].y}
-        scale={split[1].scale}
-        opacity={split[1].opacity}
-        blur={split[1].blur}
-        skewX={split[1].skewX}
-        skewY={split[1].skewY}
-        z={5}
+        $color="#0ff"
+        $x={split[1].x}
+        $y={split[1].y}
+        $scale={split[1].scale}
+        $opacity={split[1].opacity}
+        $blur={split[1].blur}
+        $skewX={split[1].skewX}
+        $skewY={split[1].skewY}
+        $z={5}
         $glitch={active}
         aria-hidden
       >
@@ -176,12 +176,12 @@ export function GlitchText({ children }) {
       {slices.map((s) => (
         <SliceLine
           key={s.key}
-          x={s.x}
-          y={s.y}
-          height={s.height}
-          opacity={s.opacity}
-          blur={s.blur}
-          skewX={s.skewX}
+          $x={s.x}
+          $y={s.y}
+          $height={s.height}
+          $opacity={s.opacity}
+          $blur={s.blur}
+          $skewX={s.skewX}
           $glitch={active}
           aria-hidden
         >

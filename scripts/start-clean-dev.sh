@@ -1,5 +1,3 @@
-#!/bin/bash
-
 PORT=3000
 
 echo "🔍 Checking for Node processes on port $PORT..."

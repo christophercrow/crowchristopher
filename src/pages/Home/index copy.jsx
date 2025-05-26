@@ -76,40 +76,43 @@ export default function Home() {
         <title>Chris Crow | Portfolio</title>
       </Helmet>
       <MainBg>
-        <DesktopNav />
-        <SplitBg>
-          <CanvasBackground side="left" nebulaImg={nebulaImg} />
-          <CanvasBackground side="right" />
-          <LeftSplit />
-          <RightSplit />
-          <CenterDivider />
-        </SplitBg>
-        {/* Side Cards */}
-        <Suspense fallback={null}>
-          <LeftCard ref={leftCardRef}>
-            {leftCardInView && <Animated3DPinCardFramer {...aboutCardProps} />}
-          </LeftCard>
-          <RightCard ref={rightCardRef}>
-            {rightCardInView && <Animated3DPinCardFramer {...projectCardProps} />}
-          </RightCard>
-        </Suspense>
-        {/* Name & Role badges */}
-        <NameBadgeWrap>
-          <NameRow>
-            <NameLeft>
-              <GlitchText>Chris</GlitchText>
-            </NameLeft>
-            <NameRight>
-              <GlitchText>Crow</GlitchText>
-            </NameRight>
-          </NameRow>
-          <RoleBadge className="top-left">Astrophysicist</RoleBadge>
-          <RoleBadge className="bottom-left">Data Scientist</RoleBadge>
-          <RoleBadge className="top-right">Software Engineer</RoleBadge>
-          <RoleBadge className="bottom-right">DB/System Admin</RoleBadge>
-        </NameBadgeWrap>
-      </MainBg>
-      <Footer />
+  {/* Top Content (fills the available space) */}
+  <div style={{ flex: 1, position: "relative" }}>
+    <DesktopNav />
+    <SplitBg>
+      <CanvasBackground side="left" nebulaImg={nebulaImg} />
+      <CanvasBackground side="right" />
+      <LeftSplit />
+      <RightSplit />
+      <CenterDivider />
+    </SplitBg>
+    {/* ...cards, badges, etc... */}
+    <Suspense fallback={null}>
+      <LeftCard ref={leftCardRef}>
+        {leftCardInView && <Animated3DPinCardFramer {...aboutCardProps} />}
+      </LeftCard>
+      <RightCard ref={rightCardRef}>
+        {rightCardInView && <Animated3DPinCardFramer {...projectCardProps} />}
+      </RightCard>
+    </Suspense>
+    <NameBadgeWrap>
+      <NameRow>
+        <NameLeft>
+          <GlitchText>Chris</GlitchText>
+        </NameLeft>
+        <NameRight>
+          <GlitchText>Crow</GlitchText>
+        </NameRight>
+      </NameRow>
+      <RoleBadge className="top-left">Astrophysicist</RoleBadge>
+      <RoleBadge className="bottom-left">Data Scientist</RoleBadge>
+      <RoleBadge className="top-right">Software Engineer</RoleBadge>
+      <RoleBadge className="bottom-right">DB/System Admin</RoleBadge>
+    </NameBadgeWrap>
+  </div>
+  {/* Footer always at the bottom */}
+  <Footer />
+</MainBg>
     </>
   );
 }

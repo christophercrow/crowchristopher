@@ -18,8 +18,6 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
     shooties: [],
     stardust: [],
     binaryCols: [],
-    arc: null,
-    terminal: null,
     nebula: null,
     nebulaLoaded: false,
     SPAWN: performance.now()
@@ -105,7 +103,7 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
         // === BINARY RAIN: Spread across full width ===
         const n = Math.floor(WIDTH / 26);
         dataRef.current.binaryCols = Array.from({ length: n }, (_, i) => ({
-          x: WIDTH * (i / (n - 1)) + rand(-12, 12),  // Now fully spread across
+          x: WIDTH * (i / (n - 1)) + rand(-12, 12),
           baseY: rand(-100, -40),
           y: rand(-100, -40),
           speed: rand(0.045, 0.1),
@@ -114,78 +112,6 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
           fontSize: rand(18, 30),
           time: performance.now() + rand(0, 2000)
         }));
-
-        // === ARC: Circuits can start/branch across full width ===
-        function randomTreePath() {
-          const points = [];
-          let x = rand(WIDTH * 0.04, WIDTH * 0.96);   // 4% margin for realism
-          let y = rand(HEIGHT * 0.18, HEIGHT * 0.43);
-          points.push({ x, y });
-          let dx = rand(70, 120);
-          for (let b = 0; b < rand(3, 5); ++b) {
-            x += dx;
-            y += rand(-100, 170);
-            // Clamp x so arc stays in bounds
-            x = Math.max(WIDTH * 0.04, Math.min(x, WIDTH * 0.96));
-            points.push({ x, y });
-            // Branches, also full width
-            if (Math.random() > 0.5) {
-              let bx = x - rand(20, 70);
-              bx = Math.max(WIDTH * 0.04, Math.min(bx, WIDTH * 0.96));
-              let by = y + rand(10, 80);
-              points.push({ x: bx, y: by }, { x, y });
-            }
-            dx = rand(55, 140);
-          }
-          return points;
-        }
-        dataRef.current.arc = {
-          points: randomTreePath(),
-          t0: performance.now(),
-          duration: 2100
-        };
-
-        // === TERMINAL LINES: Spread across full width ===
-        const terminalLines = [
-          { msg: "[OK] Boot complete", color: "#00ff73" },
-          { msg: "node server.js", color: "#5de6ff" },
-          { msg: "Welcome, admin.", color: "#00ffe5" },
-          { msg: "Fetching data...", color: "#b7ffcf" },
-          { msg: "python3 analyze.py", color: "#c3c3ff" },
-          { msg: "Login success.", color: "#c2f56c" },
-          { msg: "export PATH=$PATH:/usr/local/bin", color: "#fff9b1" },
-          { msg: "Run: ./deploy.sh", color: "#c9ffef" },
-          { msg: "CPU: 47%, MEM: 2.1 GB", color: "#8dd0ff" },
-          { msg: "Operation completed.", color: "#b2fa92" },
-          { msg: "git status --short", color: "#90d3ff" },
-          { msg: "ps aux | grep nginx", color: "#fff" },
-          { msg: "[ERR] Permission denied", color: "#ff3e4d", isError: true },
-          { msg: "Traceback (most recent call last):", color: "#ff3e4d", isError: true },
-          { msg: "Error: Connection reset", color: "#ff3e4d", isError: true }
-        ];
-        function genTerminalLine(W, H) {
-          const entry = terminalLines[Math.floor(rand(0, terminalLines.length))];
-          return {
-            msg: entry.msg,
-            color: entry.color,
-            isError: entry.isError,
-            start: performance.now(),
-            charIdx: 0,
-            scanlinePhase: rand(0, Math.PI * 2),
-            cursorBlock: Math.random() < 0.75,
-            x: rand(W * 0.05, W * 0.94),  // full width, 5% margin
-            y: rand(H * 0.12, H * 0.75),
-            fontSize: rand(18, 26),
-            opacity: rand(0.81, 1)
-          };
-        }
-        dataRef.current.terminal = {
-          lines: Array.from({ length: 6 }, () => genTerminalLine(WIDTH, HEIGHT)),
-          genLine: () => genTerminalLine(WIDTH, HEIGHT)
-        };
-        // Expose helpers for arc regeneration and terminal line regen
-        dataRef.current.randomTreePath = randomTreePath;
-        dataRef.current.genTerminalLine = genTerminalLine;
       }
     }
 
@@ -202,18 +128,17 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
     // Animation draw loop
     let running = true;
     function draw(now) {
-        const WIDTH = sizeRef.current.width;
-        const HEIGHT = sizeRef.current.height;
-        const canvas = canvasRef.current;
-        if (!canvas) {
-          // Canvas not mounted yet, try again on next frame.
-          if (running) requestAnimationFrame(draw);
-          return;
-        }
-        const ctx = canvas.getContext("2d");
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, WIDTH, HEIGHT);
-      
+      const WIDTH = sizeRef.current.width;
+      const HEIGHT = sizeRef.current.height;
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        if (running) requestAnimationFrame(draw);
+        return;
+      }
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
       // --- LEFT: STARFIELD/NEBULA ---
       if (side === "left") {
         // Starfield
@@ -293,9 +218,8 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
         }
       }
 
-      // --- RIGHT: BINARY RAIN, ARC, TERMINAL ---
+      // --- RIGHT: BINARY RAIN ONLY ---
       if (side === "right") {
-        // Binary rain
         for (let b of dataRef.current.binaryCols) {
           let t = (now - b.time) * b.speed * 0.37;
           let y = b.baseY + t;
@@ -311,92 +235,6 @@ export default function CanvasBackground({ side = "left", nebulaImg }) {
             b.baseY = rand(-100, -40);
             b.char = Math.random() > 0.5 ? "0" : "1";
             b.time = now;
-          }
-        }
-        // Arc (guard against undefined errors)
-        if (
-          dataRef.current.arc &&
-          Array.isArray(dataRef.current.arc.points) &&
-          dataRef.current.arc.points.length > 1
-        ) {
-          let t = ((now - dataRef.current.arc.t0) % dataRef.current.arc.duration) / dataRef.current.arc.duration;
-          ctx.save();
-          ctx.globalAlpha = 0.84;
-          ctx.lineWidth = 6.5;
-          ctx.shadowBlur = 18;
-          ctx.shadowColor = "#47ffe9";
-          ctx.strokeStyle = "#47ffe9";
-          ctx.beginPath();
-          for (let i = 0; i < dataRef.current.arc.points.length; ++i) {
-            let pt = dataRef.current.arc.points[i];
-            if (i === 0) ctx.moveTo(pt.x, pt.y);
-            else ctx.lineTo(pt.x + rand(-3, 3), pt.y + rand(-5, 5));
-          }
-          ctx.stroke();
-          // Spark
-          if (t < 0.97) {
-            let seg = Math.floor(t * (dataRef.current.arc.points.length - 1));
-            let pt1 = dataRef.current.arc.points[seg];
-            let pt2 = dataRef.current.arc.points[seg + 1];
-            if (pt1 && pt2) {
-              let progress = (t * (dataRef.current.arc.points.length - 1)) % 1;
-              let sx = pt1.x + (pt2.x - pt1.x) * progress + rand(-8, 8);
-              let sy = pt1.y + (pt2.y - pt1.y) * progress + rand(-8, 8);
-              ctx.save();
-              ctx.globalAlpha = 0.8;
-              ctx.shadowBlur = 22;
-              ctx.shadowColor = "#fff";
-              ctx.beginPath();
-              ctx.arc(sx, sy, 11 + rand(0, 6), 0, Math.PI * 2);
-              ctx.fillStyle = "#fff";
-              ctx.fill();
-              ctx.restore();
-            }
-          }
-          ctx.restore();
-          // Reset arc if complete
-          if (t > 0.98) {
-            const WIDTH = sizeRef.current.width;
-            const HEIGHT = sizeRef.current.height;
-            dataRef.current.arc.points = dataRef.current.randomTreePath(WIDTH, HEIGHT);
-            dataRef.current.arc.t0 = now;
-          }
-        }
-        // Terminal
-        if (dataRef.current.terminal) {
-          for (let i = 0; i < dataRef.current.terminal.lines.length; ++i) {
-            let line = dataRef.current.terminal.lines[i];
-            let elapsed = (now - line.start) * 0.12;
-            let displayText = line.msg.slice(0, Math.floor(elapsed / 5));
-            ctx.save();
-            ctx.font = `bold ${line.fontSize}px Fira Mono, monospace`;
-            ctx.shadowColor = line.color;
-            ctx.shadowBlur = line.isError ? 11 : 6;
-            ctx.globalAlpha = line.opacity * (1.0 - 0.11 * Math.sin(now / 230 + i));
-            ctx.fillStyle = line.color;
-            ctx.filter = line.isError
-              ? "blur(1.1px) brightness(1.09)"
-              : "brightness(1.04)";
-            ctx.fillText(displayText, line.x, line.y);
-            // Blinking cursor
-            if ((Math.floor(now / 480) % 2 === 0) && displayText.length < line.msg.length) {
-              ctx.save();
-              ctx.globalAlpha = 0.82;
-              ctx.fillStyle = line.color;
-              ctx.fillRect(line.x + ctx.measureText(displayText).width + 2, line.y - line.fontSize + 5, line.cursorBlock ? 14 : 2.7, line.fontSize - 7);
-              ctx.restore();
-            }
-            ctx.restore();
-            // scanline flicker
-            ctx.save();
-            ctx.globalAlpha = 0.12 + 0.10 * Math.sin(now / 110 + line.scanlinePhase);
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(line.x, line.y - 2, WIDTH * 0.28, 2.3);
-            ctx.restore();
-            // Refill line when done
-            if (displayText.length >= line.msg.length && now - line.start > 1450 + rand(0, 700)) {
-              dataRef.current.terminal.lines[i] = dataRef.current.genTerminalLine(WIDTH, HEIGHT);
-            }
           }
         }
       }

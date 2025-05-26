@@ -1,28 +1,37 @@
 import styled, { keyframes, css } from "styled-components";
 
-/* --- Main Background Container --- */
 export const MainBg = styled.div`
-  width: 100vw; min-height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   position: relative;
-  padding-top: 88px;
+  background: #181f2a; /* Or your main background */
+  overflow: hidden;
+`;
+
+export const Content = styled.div`
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  min-height: 0; /* allows content to shrink if needed */
 `;
+
 
 /* --- Split Background --- */
 export const SplitBg = styled.div`
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100vh;   // Full viewport
   display: flex;
   z-index: 1;
 `;
 
 export const LeftSplit = styled.div`
-  width: 50vw; height: 110vh;
+  width: 50vw; height: 100vh;
   background: linear-gradient(120deg,
     #221533 70%,
     #413067 92%,
@@ -33,7 +42,7 @@ export const LeftSplit = styled.div`
 `;
 
 export const RightSplit = styled.div`
-  width: 50vw; height: 110vh;
+  width: 50vw; height: 100vh;
   background: linear-gradient(120deg,
     #113122 60%,
     #1e5042 90%,
@@ -91,16 +100,18 @@ export const NameRow = styled.div`
   display: flex;
   align-items: center;
   user-select: text;
-  pointer-events: auto;
+  pointer-events: none;
   animation: ${css`${nameRowAnim} 1.07s cubic-bezier(.44,1.6,.38,1) both`};
 `;
 
 export const NameLeft = styled.span`
+  display: inline-block;
   font-family: 'Inter Tight', Arial, sans-serif;
   font-size: 8vw;
   font-weight: 900;
   letter-spacing: -2.2px;
   color: #1a173c;
+  pointer-events: auto;
   margin: 0 0.09em 0 0;
   line-height: 1.04;
   background: linear-gradient(275deg,#6a75b7 40%,#25325c 70%, #48b1eb 100%);
@@ -112,24 +123,16 @@ export const NameLeft = styled.span`
     0 0 18px #649bec85,
     0 2px 15px #3a5178;
   filter: drop-shadow(0 12px 42px #00caff28);
-  transition: text-shadow 0.18s;
-  cursor: pointer;
-  user-select: text;
-  &:hover {
-    text-shadow:
-      0 0 32px #0e0a2f,
-      0 10px 10px #00ffe163,
-      0 2px 26px #1f6febbb;
-  }
-  mix-blend-mode: lighten;
 `;
 
 export const NameRight = styled.span`
+  display: inline-block;
   font-family: 'Inter Tight', Arial, sans-serif;
   font-size: 8vw;
   font-weight: 900;
   letter-spacing: -2.2px;
   color: #1a173c;
+  pointer-events: auto;
   margin: 0 0.09em 0 0;
   line-height: 1.04;
   background: linear-gradient(275deg,#6a75b7 40%,#25325c 70%, #48b1eb 100%);
@@ -141,17 +144,7 @@ export const NameRight = styled.span`
     0 0 18px #649bec85,
     0 2px 15px #3a5178;
   filter: drop-shadow(0 12px 42px #00caff28);
-  transition: text-shadow 0.18s;
-  cursor: pointer;
-  user-select: text;
-  &:hover {
-    text-shadow:
-      0 0 32px #0e0a2f,
-      0 10px 10px #00ffe163,
-      0 2px 26px #1f6febbb;
-  }
-  mix-blend-mode: lighten;
-`;
+  `;
 
 export const NameBadgeWrap = styled.div`
   position: absolute;
@@ -172,7 +165,6 @@ export const RoleBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
   background: linear-gradient(135deg, rgba(36,41,59,0.99) 60%, rgba(44,56,95,0.92) 100%);
   color: #ffaa00;
   font-size: 1.5em;
@@ -238,97 +230,10 @@ export const RoleBadge = styled.div`
     font-size: 1.1em;
     width: 8.8em;
     height: 2.2em;
-    padding: 0 0.03em;
     border-radius: 0.28em;
     position: static;
     margin: 0.25em 0.4em;
     display: inline-flex;
     box-shadow: 0 4px 24px 0 #47ffe942, 0 1.5px 5px 0 #151925b8;
   }
-`;
-
-/* --- Scattered Photo --- */
-export const ScatteredPhoto = styled.div`
-  position: absolute;
-  ${({ left, top }) => css`left: ${left}; top: ${top};`}
-  z-index: ${({ z }) => z || 3};
-  transform: ${({ rotate }) => `rotate(${rotate || 0}deg)`};
-  box-shadow:
-    0 10px 32px 0 #182a4444,
-    0 1px 6px 1.5px #131d3351;
-  transition: filter 0.25s, box-shadow 0.25s, transform 0.24s;
-  &:hover, &:focus {
-    z-index: 99;
-    filter: brightness(1.09) saturate(1.11);
-    box-shadow:
-      0 14px 48px 6px #47ffe988,
-      0 2px 22px 6px #1f6feb44;
-    transform: ${({ rotate }) => `scale(1.07) rotate(${rotate || 0}deg)`};
-  }
-`;
-
-/* --- Glitch Text Components --- */
-export const GlitchWrap = styled.span`
-  display: inline-block;
-  position: relative;
-  font-family: 'Inter Tight', 'Montserrat', Arial, sans-serif;
-  font-weight: 900;
-  font-size: 7vw;
-  letter-spacing: -2.1px;
-  text-transform: uppercase;
-  user-select: text;
-  cursor: pointer;
-  line-height: 1.05;
-`;
-
-export const MainLayer = styled.span`
-  position: relative;
-  z-index: 5;
-  background: linear-gradient(99deg, #fff 31%, #2bf4ff 64%, #e636ff 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: brightness(1.05) contrast(1.09);
-`;
-
-export const SplitLayer = styled.span`
-  position: absolute;
-  left: 0; top: 0; width: 100%; height: 100%;
-  pointer-events: none; user-select: none;
-  z-index: ${({ z }) => z || 2};
-  color: ${({ color }) => color};
-  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
-  mix-blend-mode: lighten;
-  text-shadow: ${({ color }) =>
-    color === "#0ff"
-      ? "0 0 2px #0ff, 0 0 7px #2bf4ff"
-      : "0 0 2px #ff2e9b, 0 0 7px #e636ff"};
-  transform: ${({ x, y, scale, skewX, skewY }) =>
-    `translate(${x}px, ${y}px) scale(${scale}) skew(${skewX}deg,${skewY}deg)`};
-  filter: blur(${({ blur }) => blur || 0}px);
-  will-change: transform, opacity;
-  transition: opacity 0.14s cubic-bezier(.4,1,.43,1);
-`;
-
-export const SliceLine = styled.span`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-  z-index: 9;
-  color: #fff;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  text-transform: inherit;
-  letter-spacing: inherit;
-  text-shadow: 0 0 2px #0ff, 1px 1px 8px #e636ff;
-  opacity: ${({ $glitch, opacity }) => ($glitch ? opacity : 0)};
-  filter: blur(${({ blur }) => blur}px);
-  transform: ${({ x, skewX }) => `translateX(${x}px) skewX(${skewX}deg)`};
-  top: ${({ y }) => y}%;
-  height: ${({ height }) => height}%;
-  transition: opacity 0.11s;
 `;

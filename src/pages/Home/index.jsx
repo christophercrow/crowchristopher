@@ -22,7 +22,6 @@ const MainBg = styled.div`
   width: 100vw; min-height: 100vh;
   overflow: hidden;
   position: relative;
-  padding-top: 88px;
   display: flex;
   flex-direction: column;
   align-items: center;
