@@ -1,3 +1,5 @@
+
+
 import styled, { keyframes, css } from "styled-components";
 
 /* --- Main Background Container --- */
@@ -77,12 +79,9 @@ export const SideCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(27, 32, 56, 0.92);
   border-radius: 22px;
-  box-shadow: 0 6px 32px 0 #23243b25;
   z-index: 40;
   animation: ${css`${sideCardAnim} 1.1s cubic-bezier(.44,1.7,.38,1) 0.7s both`};
-  border: 1.5px solid #2b2e4a33;
   @media (max-width: 1300px) { display: none; }
 `;
 

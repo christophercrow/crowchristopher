@@ -1,36 +1,26 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet";
 import {
-  MainBg, SplitBg, LeftSplit, RightSplit, CenterDivider,LeftCard, RightCard,
+  MainBg, SplitBg, LeftSplit, RightSplit, CenterDivider, LeftCard, RightCard,
   NameRow, NameLeft, NameRight, NameBadgeWrap, RoleBadge,
 } from "./Home.styled.js";
-
-// src/pages/Home/index.jsx
-
-import { aboutCardProps, projectCardProps } from "./homeCardProps.jsx";
-
-
-import React, { useEffect, useRef, useState, Suspense } from "react";
-import { Helmet } from "react-helmet";
 import DesktopNav from "../../components/layout/DesktopNav/index.jsx";
 import Footer from "../../components/layout/Footer/index.jsx";
 import CanvasBackground from "../../components/CanvasBackground.jsx";
 import Cursor from "../../components/ui/Cursor/index.jsx";
-import { GlitchText } from "./GlitchText.jsx"; // Assume you export GlitchText separately!
+import { GlitchText } from "./GlitchText.jsx";
 import nebulaImg from "../../assets/images/nebula.png";
+import {
+  aboutCardProps,
+  projectCardProps,
+} from "./homeCardProps.jsx";
+import Animated3DPinCardFramer, {
+  CardHeader,
+  CardBody,
+  CardFooter,
+} from "../../components/framer/3dpin-card.jsx";
 
-// // --- Images ---
-// import closetPic from "../../assets/images/closet-pic.png";
-// import dormOveralls from "../../assets/images/dorm-overalls.png";
-// import groupSelf from "../../assets/images/group-self.png";
-// import jeenTree from "../../assets/images/jeen-tree.png";
-// import meAlbert from "../../assets/images/me-albert.png";
-// import physConf from "../../assets/images/phys-conf.png";
-// import planetarium from "../../assets/images/planetarium.png";
-// import wallShoe from "../../assets/images/wall-shoe.png";
-
-// --- Lazy-load heavy cards ---
-const Animated3DPinCardFramer = React.lazy(() => import("../../components/framer/3dpin-card.jsx"));
-
-// --- Fonts
+// --- Fonts ---
 const FONT_LINK = "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@900&display=swap";
 const addFontLink = () => {
   if (!document.getElementById("inter-tight-font")) {
@@ -41,9 +31,7 @@ const addFontLink = () => {
     document.head.appendChild(link);
   }
 };
-addFontLink(); // Called once per bundle
-
-
+addFontLink();
 
 // --- Efficient IntersectionObserver hook for in-view animation ---
 function useInView(ref) {
@@ -60,10 +48,7 @@ function useInView(ref) {
   return inView;
 }
 
-
-// --- Main Home Component ---
 export default function Home() {
-  // Side cards in-view
   const leftCardRef = useRef();
   const rightCardRef = useRef();
   const leftCardInView = useInView(leftCardRef);
@@ -76,43 +61,51 @@ export default function Home() {
         <title>Chris Crow | Portfolio</title>
       </Helmet>
       <MainBg>
-  {/* Top Content (fills the available space) */}
-  <div style={{ flex: 1, position: "relative" }}>
-    <DesktopNav />
-    <SplitBg>
-      <CanvasBackground side="left" nebulaImg={nebulaImg} />
-      <CanvasBackground side="right" />
-      <LeftSplit />
-      <RightSplit />
-      <CenterDivider />
-    </SplitBg>
-    {/* ...cards, badges, etc... */}
-    <Suspense fallback={null}>
-      <LeftCard ref={leftCardRef}>
-        {leftCardInView && <Animated3DPinCardFramer {...aboutCardProps} />}
-      </LeftCard>
-      <RightCard ref={rightCardRef}>
-        {rightCardInView && <Animated3DPinCardFramer {...projectCardProps} />}
-      </RightCard>
-    </Suspense>
-    <NameBadgeWrap>
-      <NameRow>
-        <NameLeft>
-          <GlitchText>Chris</GlitchText>
-        </NameLeft>
-        <NameRight>
-          <GlitchText>Crow</GlitchText>
-        </NameRight>
-      </NameRow>
-      <RoleBadge className="top-left">Astrophysicist</RoleBadge>
-      <RoleBadge className="bottom-left">Data Scientist</RoleBadge>
-      <RoleBadge className="top-right">Software Engineer</RoleBadge>
-      <RoleBadge className="bottom-right">DB/System Admin</RoleBadge>
-    </NameBadgeWrap>
-  </div>
-  {/* Footer always at the bottom */}
-  <Footer />
-</MainBg>
+        <div style={{ flex: 1, position: "relative" }}>
+          <DesktopNav />
+          <SplitBg>
+            <CanvasBackground side="left" nebulaImg={nebulaImg} />
+            <CanvasBackground side="right" />
+            <LeftSplit />
+            <RightSplit />
+            <CenterDivider />
+          </SplitBg>
+          {/* Left Card */}
+          <LeftCard ref={leftCardRef}>
+            {leftCardInView && (
+              <Animated3DPinCardFramer {...aboutCardProps}>
+                <CardBody>{aboutCardProps.cardBodyContent}</CardBody>
+                <CardFooter>{aboutCardProps.cardFooterContent}</CardFooter>
+              </Animated3DPinCardFramer>
+            )}
+          </LeftCard>
+          {/* Right Card */}
+          <RightCard ref={rightCardRef}>
+            {rightCardInView && (
+              <Animated3DPinCardFramer {...projectCardProps}>
+                <CardBody>{projectCardProps.cardBodyContent}</CardBody>
+                <CardFooter>{projectCardProps.cardFooterContent}</CardFooter>
+              </Animated3DPinCardFramer>
+            )}
+          </RightCard>
+          {/* Center Name and Badges */}
+          <NameBadgeWrap>
+            <NameRow>
+              <NameLeft>
+                <GlitchText>Chris</GlitchText>
+              </NameLeft>
+              <NameRight>
+                <GlitchText>Crow</GlitchText>
+              </NameRight>
+            </NameRow>
+            <RoleBadge className="top-left">Astrophysicist</RoleBadge>
+            <RoleBadge className="bottom-left">Data Scientist</RoleBadge>
+            <RoleBadge className="top-right">Software Engineer</RoleBadge>
+            <RoleBadge className="bottom-right">DB/System Admin</RoleBadge>
+          </NameBadgeWrap>
+        </div>
+        <Footer />
+      </MainBg>
     </>
   );
 }

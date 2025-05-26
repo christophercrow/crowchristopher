@@ -3,8 +3,18 @@
 import React, { useState, useEffect, useRef, memo, useMemo } from "react";
 import { LazyMotion, domAnimation } from "framer-motion";
 
+// --- Slot Components ---
+export function CardHeader({ children }) { return <div style={{ marginBottom: 10 }}>{children}</div>; }
+CardHeader.displayName = "CardHeader";
+
+export function CardBody({ children }) { return <div>{children}</div>; }
+CardBody.displayName = "CardBody";
+
+export function CardFooter({ children }) { return <div style={{ marginTop: 14 }}>{children}</div>; }
+CardFooter.displayName = "CardFooter";
+
 // --- Constants ---
-const CARD_WIDTH = 450;
+const CARD_WIDTH = 500;
 const CARD_HEIGHT = 600;
 const PIN_HEIGHT = 120;
 const BUTTON_HEIGHT = 52;
@@ -145,10 +155,9 @@ const ViewProjectButton = memo(function ViewProjectButton({ hovered, style, onCl
 });
 
 // --- PinContainer (card body and tilt) ---
-const PinContainer = memo(function PinContainer({ children, cardBody, hovered, tilt }) {
-  // Only use background or backgroundColor, not both
+const PinContainer = memo(function PinContainer({ cardBody, hovered, tilt, children }) {
+  // Slot support!
   const background = useMemo(() => {
-    // If cardBody.backgroundColor is a gradient, use it as background, otherwise use backgroundColor
     if (
       typeof cardBody.backgroundColor === "string" &&
       (cardBody.backgroundColor.includes("gradient") || cardBody.backgroundColor.includes("url("))
@@ -173,6 +182,7 @@ const PinContainer = memo(function PinContainer({ children, cardBody, hovered, t
             boxShadow: cardBody.boxShadow || "0 6px 32px 0 #0001",
           }}
         >
+          {/* Slot children here! */}
           {children}
         </div>
       </div>
@@ -180,24 +190,20 @@ const PinContainer = memo(function PinContainer({ children, cardBody, hovered, t
   );
 });
 
+// --- Utility: Extract Named Slots from Children ---
+function getSlot(children, SlotComponent) {
+  let slot = null;
+  React.Children.forEach(children, child => {
+    if (child && child.type === SlotComponent) slot = child;
+  });
+  return slot;
+}
+
 // --- Main Card ---
 export default function Animated3DPinCardFramer(props) {
   const [hovered, setHovered] = useState(false);
   const tilt = hovered ? 75 : 0;
 
-  // Memoize fonts to avoid style bloat
-  const titleStyle = useMemo(() => ({
-    ...props.title.font,
-    ...styles.title,
-    color: props.title.color || "#e9e9e9",
-    fontWeight: props.title.font.fontWeight || "bold",
-  }), [props.title]);
-  const subtitleStyle = useMemo(() => ({
-    ...props.subtitle.font,
-    ...styles.subtitle,
-    color: props.subtitle.color || "rgba(233,233,233,0.7)",
-    fontWeight: props.subtitle.font.fontWeight || "normal",
-  }), [props.subtitle]);
   const buttonStyle = useMemo(() => ({
     ...styles.button,
     backgroundColor: props.pin.backgroundColor,
@@ -223,12 +229,9 @@ export default function Animated3DPinCardFramer(props) {
         >
           {props.pin.title}
         </ViewProjectButton>
+        {/* Render children (all slot content) */}
         <PinContainer cardBody={props.cardBody} hovered={hovered} tilt={tilt}>
-          <div style={styles.content}>
-            <h3 style={titleStyle}>{props.title.text}</h3>
-            <p style={subtitleStyle}>{props.subtitle.text}</p>
-            <RippleCardAttached hovered={hovered} pin={props.pin} />
-          </div>
+          {props.children}
         </PinContainer>
       </div>
     </LazyMotion>
@@ -255,26 +258,6 @@ const styles = {
     color: "rgba(233, 233, 233, 0.95)",
     overflow: "hidden",
     position: "relative",
-    pointerEvents: "auto",
-  },
-  title: {
-    margin: 0,
-    fontSize: "1.44rem",
-    lineHeight: 1.17,
-    wordBreak: "break-word",
-    pointerEvents: "auto",
-  },
-  subtitle: {
-    margin: "0.55rem 0 0.7rem 0",
-    fontSize: "1.08rem",
-    lineHeight: 1.21,
-    wordBreak: "break-word",
-    maxHeight: "3.5em",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
-    WebkitLineClamp: 3,
     pointerEvents: "auto",
   },
   button: {
