@@ -9,7 +9,8 @@ import posterImg from "../../assets/images/phys-conf.png";
 import closetImg from "../../assets/images/dorm-overalls.png";
 import portfolioImg from "../../assets/images/group-self.png";
 import ansibleImg from "../../assets/images/sysadmin-ansible.png";
-
+import NavBar from "../../components/layout/DesktopNav/index.jsx";
+import Footer from "../../components/layout/Footer/index.jsx";
 // Example project data
 const projects = [
   {
@@ -241,6 +242,7 @@ export default function ProjectsPage() {
   return (
     <>
       <Cursor />
+      <NavBar/>
       <div style={{
         minHeight: "100vh",
         width: "100vw",
@@ -275,6 +277,8 @@ export default function ProjectsPage() {
           ))}
         </div>
       </div>
+    <Footer/>
     </>
-  );
+
+);
 }
