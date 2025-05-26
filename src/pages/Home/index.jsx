@@ -1,25 +1,14 @@
 // src/pages/Home/index.jsx
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { Helmet } from "react-helmet";
-import { Link, useLocation } from "react-router-dom";
 import nebulaImg from "../../assets/images/nebula.png";
 import CanvasBackground from "../../components/CanvasBackground";
 import Footer from "../../components/layout/Footer";
 import DesktopNav from "../../components/layout/DesktopNav";
 
 import { useInViewSection } from "../../hooks/useInViewSection";
-import FadeInImg from "../../components/ui/FadeInImg";
 
-// --- Images (update paths as needed)
-import closetPic from "../../assets/images/closet-pic.png";
-import dormOveralls from "../../assets/images/dorm-overalls.png";
-import groupSelf from "../../assets/images/group-self.png";
-import jeenTree from "../../assets/images/jeen-tree.png";
-import meAlbert from "../../assets/images/me-albert.png";
-import physConf from "../../assets/images/phys-conf.png";
-import planetarium from "../../assets/images/planetarium.png";
-import wallShoe from "../../assets/images/wall-shoe.png";
 
 import Cursor from "../../components/ui/Cursor";
 // --- React.lazy for heavy 3D Pin Cards ---
@@ -106,7 +95,7 @@ const nameRowAnim = keyframes`
 
 const NameRow = styled.div`
   position: absolute;
-  left: 28.4%; top: 35%;
+  left: 28.9%; top: 35%;
   transform: translate(-50%, -50%);
   z-index: 15;
   display: flex;
@@ -175,7 +164,7 @@ const NameRight = styled.span`
 
 const NameBadgeWrap = styled.div`
   position: absolute;
-  left: 28.6%;
+  left: 29%;
   top: 36.5%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -187,14 +176,14 @@ const NameBadgeWrap = styled.div`
 const RoleBadge = styled.div`
   position: absolute;
   width: 11.2em;
-  height: 2.2em;
+  height: 1.5em;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   background: linear-gradient(135deg, rgba(36,41,59,0.99) 60%, rgba(44,56,95,0.92) 100%);
   color: #ffaa00;
-  font-size: 2.5em;
+  font-size: 2em;
   font-family: 'Fira Mono', 'Consolas', 'Liberation Mono', monospace;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -240,18 +229,18 @@ const RoleBadge = styled.div`
 
   &.top-left {
     left: 0em;
-    top: -1.5em;
+    top: -1em;
   }
   &.bottom-left {
     left: 0em;
     bottom: -6.7em;
   }
   &.top-right {
-    right: -24.7em;
-    top: -1.5em;
+    right: -25.8em;
+    top: -1em;
   }
   &.bottom-right {
-    right: -24.7em;
+    right: -25.8em;
     bottom: -6.7em;
   }
   @media (max-width: 900px) {
@@ -266,48 +255,6 @@ const RoleBadge = styled.div`
     box-shadow: 0 4px 24px 0 #47ffe942, 0 1.5px 5px 0 #151925b8;
   }
 `;
-// --- Scattered photo logic and layout ---
-const ScatteredPhoto = styled.div`
-  position: absolute;
-  ${({ left, top }) => css`left: ${left}; top: ${top};`}
-  z-index: ${({ z }) => z || 3};
-  transform: ${({ rotate }) => `rotate(${rotate || 0}deg)`};
-  box-shadow:
-    0 10px 32px 0 #182a4444,
-    0 1px 6px 1.5px #131d3351;
-  transition: filter 0.25s, box-shadow 0.25s, transform 0.24s;
-  &:hover, &:focus {
-    z-index: 99;
-    filter: brightness(1.09) saturate(1.11);
-    box-shadow:
-      0 14px 48px 6px #47ffe988,
-      0 2px 22px 6px #1f6feb44;
-    transform: ${({ rotate }) => `scale(1.07) rotate(${rotate || 0}deg)`};
-  }
-`;
-
-const photoLayout = [
-  { left: "16%", top: "22%", rotate: -17, z: 6 },
-  { left: "32%", top: "14%", rotate: 9, z: 7 },
-  { left: "44%", top: "5%",  rotate: -6, z: 6 },
-  { left: "65%", top: "27%", rotate: 15, z: 5 },
-  { left: "25%", top: "65%", rotate:-25, z: 9 },
-  { left: "42%", top: "58%", rotate: 7, z: 6 },
-  { left: "26%", top: "53%", rotate: -11, z: 6 },
-  { left: "10%", top: "36%", rotate: 13, z: 5 },
-];
-
-const gridTiles = [
-  { img: closetPic, alt: "PC Build", width: 375, height: 500, info: "Built my first custom PC..." },
-  { img: dormOveralls, alt: "Dorm selfie", width: 285, height: 420, info: "Survived and thrived at UNC..." },
-  { img: groupSelf, alt: "Conference crew", width: 440, height: 330, info: "Led my physics group..." },
-  { img: jeenTree, alt: "Jeen tree", width: 320, height: 430, info: "Favorite thinking spot..." },
-  { img: meAlbert, alt: "With Albert", width: 375, height: 375, info: "Albert Einstein statue..." },
-  { img: planetarium, alt: "Planetarium", width: 220, height: 330, info: "Organized astronomy nights..." },
-  { img: physConf, alt: "Physics conference", width: 220, height: 350, info: "Presented neutron star research..." },
-  { img: wallShoe, alt: "Shoe on wall", width: 290, height: 330, info: "My sneaker collection..." },
-];
-
 // --- Glitch Text Component ---
 const GlitchWrap = styled.span`
   display: inline-block;
@@ -497,32 +444,6 @@ export function GlitchText({ children }) {
   );
 }
 
-function useGridInView(num) {
-  const [inView, setInView] = useState(Array(num).fill(false));
-  const refs = useRef([]);
-  useEffect(() => {
-    refs.current = refs.current.slice(0, num);
-    refs.current.forEach((node, i) => {
-      if (!node) return;
-      if (inView[i]) return;
-      const obs = new window.IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setInView(prev => {
-              const arr = [...prev];
-              arr[i] = true;
-              return arr;
-            });
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.2 }
-      );
-      obs.observe(node);
-    });
-  }, [inView, num]);
-  return [refs, inView];
-}
 
 // --- Card Props ---
 const aboutCardProps = {
@@ -550,10 +471,6 @@ const aboutCardProps = {
     text: "Physics, coding, and curiosity power everything I do.",
     color: "#aec2e6",
     font: { fontWeight: 400 }
-  },
-  image: {
-    borderRadius: "24px",
-    image: { src: jeenTree }
   },
   techIcons: []
 };
@@ -584,10 +501,6 @@ const projectCardProps = {
     color: "#aec2e6",
     font: { fontWeight: 400 }
   },
-  image: {
-    borderRadius: "24px",
-    image: { src: physConf }
-  },
   techIcons: []
 };
 
@@ -607,8 +520,6 @@ export default function Home() {
   const [leftCardRef, leftCardInView] = useInViewSection();
   const [rightCardRef, rightCardInView] = useInViewSection();
 
-  // Orbit photo grid inView/fade-in (not strictly needed for static photos, but future-proof)
-  const [photoRefs, photoInViewState] = useGridInView(gridTiles.length);
 
   return (
     <>
@@ -640,36 +551,6 @@ export default function Home() {
             </React.Suspense>
           )}
         </RightCard>
-        {/* Scattered Photo Grid */}
-        {gridTiles.map((tile, i) => (
-          <ScatteredPhoto
-            key={i}
-            left={photoLayout[i].left}
-            top={photoLayout[i].top}
-            z={photoLayout[i].z}
-            rotate={tile.rotate}
-            tabIndex={0}
-          >
-            <img
-              src={tile.img}
-              alt={tile.alt}
-              width={tile.width}
-              height={tile.height}
-              style={{
-                display: "block",
-                borderRadius: 18,
-                boxShadow: "0 8px 32px #0002",
-                background: "#161e2d",
-                border: "2.5px solid #fff",
-                maxWidth: "min(36vw, 650px)",
-                maxHeight: "min(36vh, 760px)",
-                objectFit: "cover",
-                transform: `rotate(${tile.rotate}deg)`
-              }}
-              draggable={false}
-            />
-          </ScatteredPhoto>
-        ))}
         {/* Name & Role badges */}
         <NameBadgeWrap>
           <NameRow>

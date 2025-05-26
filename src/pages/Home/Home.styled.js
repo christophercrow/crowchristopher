@@ -168,14 +168,14 @@ export const NameBadgeWrap = styled.div`
 export const RoleBadge = styled.div`
   position: absolute;
   width: 11.2em;
-  height: 2.2em;
+  height: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   background: linear-gradient(135deg, rgba(36,41,59,0.99) 60%, rgba(44,56,95,0.92) 100%);
   color: #ffaa00;
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-family: 'Fira Mono', 'Consolas', 'Liberation Mono', monospace;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -187,7 +187,7 @@ export const RoleBadge = styled.div`
     0 0 0 4px #1f6feb44;
   user-select: none;
   z-index: 50;
-  white-space: nowrap;
+  white-space: normal;
   pointer-events: auto;
   opacity: 0.99;
   transition: background 0.25s, color 0.23s, box-shadow 0.23s, border 0.23s;
@@ -195,13 +195,12 @@ export const RoleBadge = styled.div`
     0 2px 14px #47ffe9,
     0 1.5px 3px #1f6feb,
     0 0 2px #000;
-  backdrop-filter: blur(3.5px) brightness(0.9);
 
   &::before {
     content: "";
     position: absolute;
     inset: 0.1em;
-    border-radius: 0.55em;
+    border-radius: 0.1em;
     background: radial-gradient(ellipse at 60% 20%, #47ffe925 28%, transparent 80%);
     z-index: -1;
     pointer-events: none;
@@ -211,8 +210,8 @@ export const RoleBadge = styled.div`
 
   &:hover, &:focus {
     box-shadow:
-      0 6px 38px 8px #47ffe9b7,
-      0 1.5px 20px 5px #1f6febcc,
+      0 2px 5px 8px #47ffe9b7,
+      0 1.5px 10px 5px #1f6febcc,
       0 0 0 8px #47ffe965;
     color: #fff;
     background: linear-gradient(100deg, rgba(44,66,101,0.99) 25%, #1f6feb 85%);
@@ -220,20 +219,20 @@ export const RoleBadge = styled.div`
   }
 
   &.top-left {
-    left: 1em;
-    top: -1.3em;
+    left: 0em;
+    top: -1.25em;
   }
   &.bottom-left {
-    left: 1em;
-    bottom: -7.1em;
+    left: 0em;
+    bottom: -8.4em;
   }
   &.top-right {
-    right: -26.9em;
-    top: -1.3em;
+    right: -35em;
+    top: -1.25em;
   }
   &.bottom-right {
-    right: -26.9em;
-    bottom: -7.1em;
+    right: -35em;
+    bottom: -8.4em;
   }
   @media (max-width: 900px) {
     font-size: 1.1em;
