@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback} from "react";
 import './cursor.css';
 import DescCard from '../../features/DescCard';
 

@@ -1,6 +1,6 @@
 // src/components/framer/3dpin-card.jsx
 
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, useRef, memo, useMemo } from "react";
 import { LazyMotion, domAnimation } from "framer-motion";
 
 // --- Constants ---
@@ -13,23 +13,17 @@ const ICON_GAP = 16;
 const RIPPLE_LIFESPAN = 1460; // ms
 const RIPPLE_INTERVAL = 320;  // ms
 
-// --- Add Ripple Animation Keyframes Once ---
+// --- Ripple Animation Keyframes (add once) ---
 const addRippleKeyframes = () => {
   if (!document.getElementById("ripple-water-keyframes")) {
     const style = document.createElement("style");
     style.id = "ripple-water-keyframes";
     style.innerHTML = `
       @keyframes ripple-water {
-        0% {
-          opacity: 0.34;
-          transform: translate(-50%, -50%) scale(0.2);
-        }
-        40% { opacity: 0.18; }
-        85% { opacity: 0.08; }
-        100% {
-          opacity: 0;
-          transform: translate(-50%, -50%) scale(3.7);
-        }
+        0% { opacity: 0.34; transform: translate(-50%, -50%) scale(0.2);}
+        40% { opacity: 0.18;}
+        85% { opacity: 0.08;}
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(3.7);}
       }
     `;
     document.head.appendChild(style);
@@ -37,20 +31,18 @@ const addRippleKeyframes = () => {
 };
 addRippleKeyframes();
 
-// --- Ripple Effect at Pin Tip ---
+// --- Ripple Effect ---
 const RippleCardAttached = memo(function RippleCardAttached({ hovered, pin }) {
   const [ripples, setRipples] = useState([]);
   const rippleColor = pin?.lineColorPrimary || "#fff";
   const intervalRef = useRef();
 
-  // Start/stop ripple interval
   useEffect(() => {
     if (!hovered) {
       setRipples([]);
       if (intervalRef.current) clearInterval(intervalRef.current);
       return;
     }
-    // Add first ripple immediately
     setRipples([{ id: Date.now() }]);
     intervalRef.current = setInterval(() => {
       setRipples((old) => [...old, { id: Date.now() }]);
@@ -61,7 +53,6 @@ const RippleCardAttached = memo(function RippleCardAttached({ hovered, pin }) {
     };
   }, [hovered]);
 
-  // Auto-remove ripples after their lifespan
   useEffect(() => {
     if (!ripples.length) return;
     const timeout = setTimeout(() => {
@@ -94,7 +85,7 @@ const RippleCardAttached = memo(function RippleCardAttached({ hovered, pin }) {
   );
 });
 
-// --- Pin Marker (vertical bar) ---
+// --- Pin Marker ---
 const PinMarker = memo(function PinMarker({ hovered, pin }) {
   const height = hovered ? PIN_HEIGHT : 0;
   return (
@@ -105,7 +96,7 @@ const PinMarker = memo(function PinMarker({ hovered, pin }) {
           height: `${height}px`,
           background: pin?.lineColorPrimary || "#fff",
           border: `1px solid ${pin?.lineColorSecondary || "#fff9"}`,
-          boxShadow: `0 0 16px 2px ${(pin?.lineColorPrimary || "#fff")}44`,
+          boxShadow: `0 0 14px 1px ${(pin?.lineColorPrimary || "#fff")}25`,
         }}
       />
     </div>
@@ -113,7 +104,6 @@ const PinMarker = memo(function PinMarker({ hovered, pin }) {
 });
 
 // --- Floating Tech Icons ---
-// The important change is here: use icon as a React component, pass label as key+tooltip
 const FloatingIconsHorizontal = memo(function FloatingIconsHorizontal({ hovered, techIcons = [], pin }) {
   if (!hovered || techIcons.length === 0) return null;
   return (
@@ -134,7 +124,7 @@ const FloatingIconsHorizontal = memo(function FloatingIconsHorizontal({ hovered,
   );
 });
 
-// --- Project Button (only clickable thing) ---
+// --- View Project Button ---
 const ViewProjectButton = memo(function ViewProjectButton({ hovered, style, onClick, children }) {
   return (
     <button
@@ -156,6 +146,18 @@ const ViewProjectButton = memo(function ViewProjectButton({ hovered, style, onCl
 
 // --- PinContainer (card body and tilt) ---
 const PinContainer = memo(function PinContainer({ children, cardBody, hovered, tilt }) {
+  // Only use background or backgroundColor, not both
+  const background = useMemo(() => {
+    // If cardBody.backgroundColor is a gradient, use it as background, otherwise use backgroundColor
+    if (
+      typeof cardBody.backgroundColor === "string" &&
+      (cardBody.backgroundColor.includes("gradient") || cardBody.backgroundColor.includes("url("))
+    ) {
+      return { background: cardBody.backgroundColor };
+    }
+    return { backgroundColor: cardBody.backgroundColor };
+  }, [cardBody.backgroundColor]);
+
   return (
     <div style={styles.pinContainerWrap}>
       <div style={styles.pinContainerPerspective}>
@@ -166,8 +168,9 @@ const PinContainer = memo(function PinContainer({ children, cardBody, hovered, t
             border: `${cardBody.borderWidth || 4}px solid ${
               hovered ? cardBody.borderHoverColor : cardBody.borderColor
             }`,
-            backgroundColor: cardBody.backgroundColor,
+            ...background,
             transform: `rotateX(${tilt}deg) scale(${hovered ? 0.94 : 1})`,
+            boxShadow: cardBody.boxShadow || "0 6px 32px 0 #0001",
           }}
         >
           {children}
@@ -182,28 +185,27 @@ export default function Animated3DPinCardFramer(props) {
   const [hovered, setHovered] = useState(false);
   const tilt = hovered ? 75 : 0;
 
-  // Styles moved out of render for performance
-  const contentStyle = styles.content;
-  const titleStyle = {
+  // Memoize fonts to avoid style bloat
+  const titleStyle = useMemo(() => ({
     ...props.title.font,
     ...styles.title,
     color: props.title.color || "#e9e9e9",
     fontWeight: props.title.font.fontWeight || "bold",
-  };
-  const subtitleStyle = {
+  }), [props.title]);
+  const subtitleStyle = useMemo(() => ({
     ...props.subtitle.font,
     ...styles.subtitle,
     color: props.subtitle.color || "rgba(233,233,233,0.7)",
     fontWeight: props.subtitle.font.fontWeight || "normal",
-  };
-  const buttonStyle = {
+  }), [props.subtitle]);
+  const buttonStyle = useMemo(() => ({
     ...styles.button,
     backgroundColor: props.pin.backgroundColor,
     border: `2.5px solid ${props.pin.textColor}`,
     color: props.pin.textColor,
     fontSize: props.pin.font.fontSize,
     fontWeight: props.pin.font.fontWeight || "bold",
-  };
+  }), [props.pin]);
 
   return (
     <LazyMotion strict features={domAnimation}>
@@ -222,7 +224,7 @@ export default function Animated3DPinCardFramer(props) {
           {props.pin.title}
         </ViewProjectButton>
         <PinContainer cardBody={props.cardBody} hovered={hovered} tilt={tilt}>
-          <div style={contentStyle}>
+          <div style={styles.content}>
             <h3 style={titleStyle}>{props.title.text}</h3>
             <p style={subtitleStyle}>{props.subtitle.text}</p>
             <RippleCardAttached hovered={hovered} pin={props.pin} />
@@ -239,7 +241,7 @@ const styles = {
     position: "relative",
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
-    opacity: 0.9,
+    opacity: 0.97,
     pointerEvents: "auto",
   },
   content: {
@@ -281,7 +283,7 @@ const styles = {
     borderRadius: "9999px",
     textAlign: "center",
     cursor: "pointer",
-    boxShadow: `0 2px 18px 0 #47ffe922`,
+    boxShadow: "0 2px 16px 0 #47ffe915",
     outline: "none",
     transition: "background .23s,border .23s,box-shadow .23s",
     zIndex: 50,
@@ -368,10 +370,10 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "2.1rem",
-    filter: "drop-shadow(0 3px 14px rgba(0,0,0,0.45))",
-    transform: "scale(1.15)",
+    filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.13))",
+    transform: "scale(1.09)",
     opacity: 1,
-    transition: "transform 0.38s cubic-bezier(.6,-0.04,.58,1.2), opacity 0.38s cubic-bezier(.6,-0.04,.58,1.2)",
+    transition: "transform 0.32s cubic-bezier(.6,-0.04,.58,1.2), opacity 0.32s cubic-bezier(.6,-0.04,.58,1.2)",
     pointerEvents: "auto",
   },
   pinContainerWrap: {
