@@ -1,5 +1,16 @@
+// src/pages/Home/homeCardProps.js
 import jeenTree from "../../assets/images/jeen-tree.png";
 import physConf from "../../assets/images/phys-conf.png";
+import {
+  SiPython,
+  SiPostgresql,
+  SiDocker,
+  SiLinux,
+  SiTerraform,
+  SiGithub,
+  SiMongodb,
+  SiSnowflake,
+} from "react-icons/si";
 
 export const aboutCardProps = {
   cardBody: {
@@ -23,7 +34,7 @@ export const aboutCardProps = {
     font: { fontWeight: "bold" },
   },
   subtitle: {
-    text: "Physics, coding, and curiosity power everything I do.",
+    text: "Astrophysics researcher, data wrangler, and technology enthusiast. Making science accessible, automating everything, and driven by curiosity.",
     color: "#aec2e6",
     font: { fontWeight: 400 },
   },
@@ -31,7 +42,14 @@ export const aboutCardProps = {
     borderRadius: "24px",
     image: { src: jeenTree },
   },
-  techIcons: [],
+  techIcons: [
+    { icon: SiPython, label: "Python" },
+    { icon: SiPostgresql, label: "PostgreSQL" },
+    { icon: SiDocker, label: "Docker" },
+    { icon: SiLinux, label: "Linux" },
+    { icon: SiTerraform, label: "Terraform" },
+    { icon: SiGithub, label: "GitHub" },
+  ],
 };
 
 export const projectCardProps = {
@@ -56,7 +74,7 @@ export const projectCardProps = {
     font: { fontWeight: "bold" },
   },
   subtitle: {
-    text: "Production-ready, automated, and visually stunning solutions.",
+    text: "Designed resilient ETL pipelines, parallel simulations, and monitoring stacks. Managed billion-row datasets, automated infra with Ansible & Terraform, and delivered data-driven insights.",
     color: "#aec2e6",
     font: { fontWeight: 400 },
   },
@@ -64,5 +82,12 @@ export const projectCardProps = {
     borderRadius: "24px",
     image: { src: physConf },
   },
-  techIcons: [],
+  techIcons: [
+    { icon: SiPostgresql, label: "PostgreSQL" },
+    { icon: SiMongodb, label: "MongoDB" },
+    { icon: SiSnowflake, label: "Snowflake" },
+    { icon: SiPython, label: "Python" },
+    { icon: SiTerraform, label: "Terraform" },
+    { icon: SiDocker, label: "Docker" },
+  ],
 };

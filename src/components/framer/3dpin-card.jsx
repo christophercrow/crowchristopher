@@ -1,6 +1,6 @@
-// components/framer/3dpin-card.jsx
+// src/components/framer/3dpin-card.jsx
 
-import React, { useState, useEffect, useRef, useCallback, memo } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { LazyMotion, domAnimation } from "framer-motion";
 
 // --- Constants ---
@@ -113,19 +113,21 @@ const PinMarker = memo(function PinMarker({ hovered, pin }) {
 });
 
 // --- Floating Tech Icons ---
+// The important change is here: use icon as a React component, pass label as key+tooltip
 const FloatingIconsHorizontal = memo(function FloatingIconsHorizontal({ hovered, techIcons = [], pin }) {
   if (!hovered || techIcons.length === 0) return null;
   return (
     <div style={styles.iconsContainer}>
-      {techIcons.map((icon, i) => (
+      {techIcons.map(({ icon: Icon, label }, i) => (
         <div
-          key={i}
+          key={label || i}
           style={{
             ...styles.icon,
             color: pin?.lineColorPrimary || "#fff",
           }}
+          title={label}
         >
-          {icon}
+          <Icon />
         </div>
       ))}
     </div>
