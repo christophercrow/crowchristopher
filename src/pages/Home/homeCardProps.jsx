@@ -17,6 +17,21 @@ import {
 } from "react-icons/si";
 
 // --- About Card Visual Content ---
+// --- About Card Visual Content ---
+
+// Tech stack for About Card with links
+const aboutStack = [
+  { icon: SiPython, label: "Python", url: "https://www.python.org/" },
+  { icon: SiPandas, label: "Pandas", url: "https://pandas.pydata.org/" },
+  { icon: SiReact, label: "React", url: "https://react.dev/" },
+  { icon: SiStreamlit, label: "Streamlit", url: "https://streamlit.io/" },
+  { icon: SiPostgresql, label: "PostgreSQL", url: "https://www.postgresql.org/" },
+  { icon: SiDocker, label: "Docker", url: "https://www.docker.com/" },
+  { icon: SiLinux, label: "Linux", url: "https://www.linux.org/" },
+  { icon: SiTerraform, label: "Terraform", url: "https://www.terraform.io/" },
+  { icon: SiGithub, label: "GitHub", url: "https://github.com/" },
+];
+
 export const aboutCardProps = {
   cardBody: {
     borderRadius: "26px",
@@ -33,19 +48,12 @@ export const aboutCardProps = {
     font: { fontSize: "1.12em", fontWeight: "bold" },
     title: "More About Me",
   },
-  techIcons: [
-    { icon: SiPython, label: "Python" },
-    { icon: SiPandas, label: "Pandas" },
-    { icon: SiReact, label: "React" },
-    { icon: SiStreamlit, label: "Streamlit" },
-    { icon: SiPostgresql, label: "PostgreSQL" },
-    { icon: SiDocker, label: "Docker" },
-    { icon: SiLinux, label: "Linux" },
-    { icon: SiTerraform, label: "Terraform" },
-    { icon: SiGithub, label: "GitHub" },
-  ],
+  techIcons: aboutStack.map(({ icon, label }) => ({ icon, label })), // for floating bar if you want
   cardHeader: (
-    <h2>About Me</h2>
+    <h2 style={{ marginBottom: 0 }}>
+      <span role="img" aria-label="wave" style={{ marginRight: 8 }}>👋</span>
+      Hi, I'm <span style={{ color: "#47ffe9", marginLeft: 5 }}>Chris Crow</span>
+    </h2>
   ),
   cardBodyContent: (
     <div
@@ -54,7 +62,7 @@ export const aboutCardProps = {
         flexDirection: "column",
         alignItems: "flex-start",
         textAlign: "left",
-        gap: "1.15rem",
+        gap: "1.09rem",
         fontSize: "1.09rem",
         lineHeight: 1.68,
         color: "#eaf6fb",
@@ -65,21 +73,6 @@ export const aboutCardProps = {
         boxSizing: "border-box",
       }}
     >
-      <div
-        style={{
-          fontWeight: 700,
-          fontSize: "1.19rem",
-          letterSpacing: "0.01em",
-          color: "#47ffe9",
-          marginBottom: "-0.25rem",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
-        <span role="img" aria-label="wave">👋</span>
-        Hi, I'm <span style={{ color: "#9af0ff", marginLeft: 4 }}>Chris Crow</span>
-      </div>
       <div style={{ color: "#b8e9ff" }}>
         Astrophysics student, developer, and data enthusiast.<br />
         I build tools and pipelines to make sense of cosmic data, turning complex science into interactive, visual experiences.
@@ -94,7 +87,7 @@ export const aboutCardProps = {
           lineHeight: 1.56,
         }}
       >
-        <li style={{ marginBottom: "2px", position: "relative" }}>
+        <li style={{ marginBottom: "2px" }}>
           <span style={{
             color: "#60fff8",
             marginRight: 8,
@@ -103,7 +96,7 @@ export const aboutCardProps = {
           }}>✦</span>
           Stellar evolution & galaxy simulation
         </li>
-        <li style={{ marginBottom: "2px", position: "relative" }}>
+        <li style={{ marginBottom: "2px" }}>
           <span style={{
             color: "#60fff8",
             marginRight: 8,
@@ -112,7 +105,7 @@ export const aboutCardProps = {
           }}>✦</span>
           Machine learning for star classification
         </li>
-        <li style={{ marginBottom: "2px", position: "relative" }}>
+        <li style={{ marginBottom: "2px" }}>
           <span style={{
             color: "#60fff8",
             marginRight: 8,
@@ -142,6 +135,52 @@ export const aboutCardProps = {
           border: "1px solid #243343",
         }}
       />
+      <div style={{ marginTop: 14 }}>
+        <strong style={{ color: "#7effff", fontWeight: 700, fontSize: "1.03em", letterSpacing: "0.01em" }}>
+          Stack:
+        </strong>
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.75em 1.2em",
+          marginTop: 8,
+          alignItems: "center",
+        }}>
+          {aboutStack.map(({ icon: Icon, label, url }) => (
+            <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#3efcff",
+                fontWeight: 500,
+                fontSize: "1.08em",
+                textDecoration: "none",
+                transition: "color 0.13s",
+                opacity: 0.96,
+                padding: "2.5px 8px",
+                borderRadius: "7px",
+                background: "rgba(30,44,51,0.13)",
+              }}
+              onMouseOver={e => e.currentTarget.style.color = "#fff"}
+              onMouseOut={e => e.currentTarget.style.color = "#3efcff"}
+              title={label}
+            >
+              <Icon size={23} style={{ filter: "drop-shadow(0 2px 7px #2cfad245)" }} />
+              <span style={{
+                fontSize: "0.99em",
+                fontWeight: 500,
+                letterSpacing: "0.03em",
+                textShadow: "0 1px 5px #171a2390"
+              }}>{label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   ),
   cardFooterContent: (
@@ -184,6 +223,21 @@ export const aboutCardProps = {
     </div>
   ),
 };
+// --- Project Card Visual Content ---
+// src/pages/Home/homeCardProps.jsx
+
+// Rich tech stack display (icon, label, URL)
+const techStack = [
+  { icon: SiPython, label: "Python", url: "https://www.python.org/" },
+  { icon: SiPostgresql, label: "PostgreSQL", url: "https://www.postgresql.org/" },
+  { icon: SiStreamlit, label: "Streamlit", url: "https://streamlit.io/" },
+  { icon: SiReact, label: "React", url: "https://react.dev/" },
+  { icon: SiDocker, label: "Docker", url: "https://www.docker.com/" },
+  { icon: SiTerraform, label: "Terraform", url: "https://www.terraform.io/" },
+  { icon: SiMongodb, label: "MongoDB", url: "https://www.mongodb.com/" },
+  { icon: SiSnowflake, label: "Snowflake", url: "https://www.snowflake.com/" },
+  { icon: SiGithub, label: "GitHub", url: "https://github.com/" },
+];
 
 // --- Project Card Visual Content ---
 export const projectCardProps = {
@@ -202,19 +256,9 @@ export const projectCardProps = {
     font: { fontSize: "1.12em", fontWeight: "bold" },
     title: "My Projects",
   },
-  techIcons: [
-    { icon: SiReact, label: "React" },
-    { icon: SiStreamlit, label: "Streamlit" },
-    { icon: SiPython, label: "Python" },
-    { icon: SiPostgresql, label: "PostgreSQL" },
-    { icon: SiMongodb, label: "MongoDB" },
-    { icon: SiSnowflake, label: "Snowflake" },
-    { icon: SiDocker, label: "Docker" },
-    { icon: SiTerraform, label: "Terraform" },
-    { icon: SiGithub, label: "GitHub" },
-  ],
+  techIcons: techStack.map(({ icon, label }) => ({ icon, label })), // for floating bar
   cardHeader: (
-    <h2>Featured Project</h2>
+    <h2 style={{ marginBottom: 0 }}>🚀 Gaia DR3 Interactive Dashboard</h2>
   ),
   cardBodyContent: (
     <div
@@ -222,46 +266,31 @@ export const projectCardProps = {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        gap: "1.09rem",
+        gap: "1.12rem",
         color: "#d7f9f3",
         fontSize: "1.08rem",
         lineHeight: 1.62,
         fontWeight: 400,
         padding: "24px 24px 10px 24px",
-        minHeight: 240,
+        minHeight: 260,
         width: "100%",
         boxSizing: "border-box",
       }}
     >
-      <div
-        style={{
-          fontWeight: 700,
-          fontSize: "1.15rem",
-          color: "#6fffe3",
-          marginBottom: "-0.1rem",
-          letterSpacing: "0.01em",
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        <span role="img" aria-label="rocket">🚀</span>
-        Gaia DR3 Interactive Dashboard
-      </div>
       <div style={{ color: "#b1faed" }}>
         Explore billions of stars with interactive plots and real-time analytics. This dashboard ingests Gaia DR3 data into PostgreSQL, powers main-sequence and HR diagrams, and supports custom filters and queries.
       </div>
       <ul
         style={{
           margin: 0,
-          paddingLeft: "1.09rem",
+          paddingLeft: "1.05rem",
           color: "#aafee8",
-          fontSize: "1.01rem",
+          fontSize: "1.02rem",
           listStyle: "none",
           lineHeight: 1.52,
         }}
       >
-        <li style={{ marginBottom: "2px", position: "relative" }}>
+        <li style={{ marginBottom: "2px" }}>
           <span style={{
             color: "#47ffe9",
             marginRight: 8,
@@ -270,7 +299,7 @@ export const projectCardProps = {
           }}>▣</span>
           Full ETL pipeline (Python &amp; Docker)
         </li>
-        <li style={{ marginBottom: "2px", position: "relative" }}>
+        <li style={{ marginBottom: "2px" }}>
           <span style={{
             color: "#47ffe9",
             marginRight: 8,
@@ -289,14 +318,51 @@ export const projectCardProps = {
           Fast SQL queries &amp; science-ready data
         </li>
       </ul>
-      <div style={{
-        fontSize: "0.98rem",
-        color: "#81f4ff",
-        marginTop: 2,
-        fontWeight: 500,
-        letterSpacing: ".02em"
-      }}>
-        <strong>Stack:</strong> Python • PostgreSQL • Streamlit • Plotly
+      <div style={{ marginTop: 10, marginBottom: 3 }}>
+        <strong style={{ color: "#7effff", fontWeight: 700, fontSize: "1.03em", letterSpacing: "0.01em" }}>
+          Stack:
+        </strong>
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.75em 1.2em",
+          marginTop: 8,
+          alignItems: "center",
+        }}>
+          {techStack.map(({ icon: Icon, label, url }) => (
+            <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#3efcff",
+                fontWeight: 500,
+                fontSize: "1.08em",
+                textDecoration: "none",
+                transition: "color 0.13s",
+                opacity: 0.96,
+                padding: "2.5px 8px",
+                borderRadius: "7px",
+                background: "rgba(30,44,51,0.13)",
+              }}
+              onMouseOver={e => e.currentTarget.style.color = "#fff"}
+              onMouseOut={e => e.currentTarget.style.color = "#3efcff"}
+              title={label}
+            >
+              <Icon size={23} style={{ filter: "drop-shadow(0 2px 7px #2cfad245)" }} />
+              <span style={{
+                fontSize: "0.99em",
+                fontWeight: 500,
+                letterSpacing: "0.03em",
+                textShadow: "0 1px 5px #171a2390"
+              }}>{label}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   ),

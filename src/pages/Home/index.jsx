@@ -98,10 +98,10 @@ export default function Home() {
                 <GlitchText>Crow</GlitchText>
               </NameRight>
             </NameRow>
-            <RoleBadge className="top-left">Astrophysicist</RoleBadge>
-            <RoleBadge className="bottom-left">Data Scientist</RoleBadge>
-            <RoleBadge className="top-right">Software Engineer</RoleBadge>
-            <RoleBadge className="bottom-right">DB/System Admin</RoleBadge>
+            <RoleBadge className="top-left">Astrophysics</RoleBadge>
+            <RoleBadge className="bottom-left">Data Science</RoleBadge>
+            <RoleBadge className="top-right">Full-Stack</RoleBadge>
+            <RoleBadge className="bottom-right">Cybersecurity</RoleBadge>
           </NameBadgeWrap>
         </div>
         <Footer />
